@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Replace <username>, <password>, and <dbname> with your details
-const uri = "mongodb+srv://sanskarsahu1704:E57ftRjVYbR5opHM@cluster0.hdsh9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.DB_URI;
 
 
 
