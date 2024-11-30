@@ -1,8 +1,11 @@
 import React from "react";
+import { Toaster } from "sonner";
 import ProfileCard from "../../components/candidatePage/ProfileCard";
 import ApplicationStatus from "../../components/candidatePage/ApplicationStatus";
 import ApplicationsTable from "../../components/candidatePage/ApplicationsTable";
 import Reminders from "../../components/candidatePage/Reminders";
+import Sidebar from "../../components/candidatePage/Sidebar";
+import CandidateTest from "../../components/candidatePage/submitResume";
 
 const mockCandidate = {
   id: "1",
@@ -33,7 +36,7 @@ const mockCandidate = {
       status: "PENDING",
     },
   ],
-  currentStage: "TEST_IN_PROGRESS",
+  currentStage: "TEST_PENDING",
   testProgress: 34,
 };
 
@@ -46,27 +49,43 @@ const mockReminders = [
 ];
 
 export default function CandidateDashboard() {
+  const isInTest = mockCandidate.currentStage === "TEST_IN_PROGRESS";
+
+  if (isInTest) {
+    return <CandidateTest testProgress={mockCandidate.testProgress || 0} />;
+  }
+
   return (
-    <div className='max-w-7xl mx-auto px-4 py-8'>
-      <div className='grid gap-8 md:grid-cols-[300px,1fr]'>
-        <div>
-          <ProfileCard candidate={mockCandidate} />
-        </div>
+    <div className=' bg-slate-900'>
+      <Toaster position='top-right' />
+      <Sidebar />
+      <div className='ml-64'>
+        <div className='max-w-7xl mx-auto px-4 py-8'>
+          <div className=''>
+            {/* <div>
+              <ProfileCard candidate={mockCandidate} />
+            </div> */}
 
-        <div className='space-y-8'>
-          <h1 className='text-3xl font-bold text-white'>Dashboard</h1>
-          <p className='text-slate-400'>Welcome back</p>
+            <div className='space-y-8   mt-0 overflow-hidden'>
+              <div>
+                <h1 className='text-3xl font-bold text-white'>Dashboard</h1>
+                <p className='text-slate-400'>
+                  Welcome back, {mockCandidate.name}
+                </p>
+              </div>
 
-          <ApplicationStatus
-            currentStage={mockCandidate.currentStage}
-            testProgress={mockCandidate.testProgress}
-          />
+              <ApplicationStatus
+                currentStage={mockCandidate.currentStage}
+                testProgress={mockCandidate.testProgress}
+              />
 
-          <ApplicationsTable applications={mockCandidate.applications} />
-        </div>
+              <ApplicationsTable applications={mockCandidate.applications} />
+            </div>
 
-        <div className='md:col-start-2'>
-          <Reminders reminders={mockReminders} />
+            <div className='md:col-start-2'>
+              <Reminders reminders={mockReminders} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
