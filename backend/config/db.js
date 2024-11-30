@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
-
+require('dotenv').config();
 // Replace <username>, <password>, and <dbname> with your details
 const uri = process.env.DB_URI;
 
 
 
-async function connectDB() {
+const connectDB=async()=>{
     try {
+      // console.log(uri)
       await mongoose.connect(uri);
       console.log('MongoDB Atlas connected successfully!');
     } catch (err) {
@@ -14,7 +15,5 @@ async function connectDB() {
       process.exit(1);
     }
   }
-
-connectDB();
 
 module.exports = connectDB;

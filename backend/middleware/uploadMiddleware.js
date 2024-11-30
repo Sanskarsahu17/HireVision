@@ -7,9 +7,9 @@ const storage = multer.diskStorage({
     cb(null, 'uploads'); // Files will be stored in the "uploads" folder
   },
   filename: (req, file, cb) => {
-    cb(null, `${req.body.email}-${Date.now()}-${file.originalname}`); // Add timestamp to prevent conflicts
+    cb(null, `${req.user.email}-${Date.now()}-${file.originalname}`); // Add timestamp to prevent conflicts
   },
-});
+});  
 
 // File filter to ensure only PDFs are uploaded
 const fileFilter = (req, file, cb) => {

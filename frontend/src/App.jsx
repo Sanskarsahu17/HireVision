@@ -10,10 +10,10 @@ import CandidateDashboard from "./pages/candidate/CandidateDashboard";
 const App = () => {
   return (
     <div className=' h-full  bg-gray-900'>
-      {/* <Routes>
+      <Routes>
         <Route path='/' element={<Jobs />} />
         <Route path='/job/:id' element={<JobDescription />} />
-      </Routes> */}
+      </Routes>
       {/* <HRDashboard /> */}
       <HomePage />
     </div>
