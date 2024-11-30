@@ -4,6 +4,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 const authenticationRoutes = require('./routes/authenticationRoutes')
 const appliedjob = require('./routes/appliedJob');
+const assesmentRoutes = require('./routes/AssessmentRoutes');
 
 
 const app = express();
@@ -17,7 +18,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/authentication', authenticationRoutes);
-app.use('/api/jobApplication',appliedjob)
+app.use('/api/jobApplication',appliedjob);
+app.use('/api/assessment',assesmentRoutes);
 
 
 const PORT = process.env.PORT || 5000;

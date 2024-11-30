@@ -14,7 +14,7 @@ router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, 
         // const {requirements,jobPosition} = req.body;
         const requirements = 'Hello';
         const jobPosition = 'hwllo';
-        const resumePath = `uploads/${email}-${Date.now()}-${req.file.originalname}`;
+        const resumePath = req.resumePath;
         
         // Save details in the db
         const newApplication = new appliedJobs({
