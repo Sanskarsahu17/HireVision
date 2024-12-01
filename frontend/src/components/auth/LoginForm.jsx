@@ -1,10 +1,10 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -22,20 +22,24 @@ export default function LoginForm() {
     }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await axios.post('http://localhost:5000/api/authentication/login', formData);
+      const response = await axios.post(
+        "http://localhost:5000/api/authentication/login",
+        formData
+      );
       const { token } = response.data;
-      Cookies.set('token', token, { expires: 1 }); // Store the JWT token in cookies for 1 day
+      Cookies.set("token", token, { expires: 1 }); // Store the JWT token in cookies for 1 day
       console.log(token);
       toast.success("Login successful!");
-      navigate('/candidate/dashboard');
+      navigate("/candidate/dashboard");
+      window.dispatchEvent(new Event("storage"));
     } catch (error) {
-      console.error('Login failed', error);
+      console.error("Login failed", error);
+      toast.error("Login failed. Please try again.");
     }
-    
   };
 
   return (
@@ -48,7 +52,6 @@ export default function LoginForm() {
         required
         value={formData.email}
         onChange={handleChange}
-        
       />
 
       <InputField
