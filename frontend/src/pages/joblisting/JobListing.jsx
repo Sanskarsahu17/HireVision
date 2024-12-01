@@ -4,7 +4,7 @@ import { JobSearch } from "../../components/jobListing/JobSearch";
 // import { JobFilters } from "../components/jobs/JobFilters";
 import Listings from "../../components/jobListing/Listing";
 
-export function Jobs() {
+export default function JobListing() {
   return (
     <div className='min-h-screen bg-gray-900 pt-24 pb-12'>
       <div className='container mx-auto px-6'>
