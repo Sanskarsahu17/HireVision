@@ -6,6 +6,7 @@ const appliedJobs = new mongoose.Schema({
   resumePath: { type: String, required: true }, // Path to the uploaded resume
   uploadedAt: { type: Date, default: Date.now }, // Timestamp
   requirements: {type: String, required: true}, // Job requirements
+  company:{type:String,required: true}, //company
   jobPosition: {type: String,required:true}, // job position
 });
 

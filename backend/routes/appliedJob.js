@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, res) => {
     try{
         const {email } = req.user; // Extracted from token
-        const {requirements,jobPosition} = req.body
+        const {requirements,jobPosition,company} = req.body
         
         // const {requirements,jobPosition} = req.body;
         // const requirements = 'Hello';
@@ -22,6 +22,7 @@ router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, 
             resumePath, // Path of uploaded file
             requirements,
             jobPosition,
+            company,
           });
 
           await newApplication.save();

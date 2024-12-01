@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Toaster } from "sonner";
 import ProfileCard from "../../components/candidatePage/ProfileCard";
 import ApplicationStatus from "../../components/candidatePage/ApplicationStatus";

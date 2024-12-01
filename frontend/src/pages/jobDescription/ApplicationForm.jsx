@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function ApplicationForm() {
   const location = useLocation();
+  const navigate = useNavigate();
   const job = location.state.job; // Get job data from the state
   const [email, setEmail] = useState('');
   const [resume, setResume] = useState(null);
@@ -18,11 +20,14 @@ export default function ApplicationForm() {
     formData.append('resume', resume);
     // formData.append('message', message);
     // formData.append('jobId', job.id); // Include job ID or any other relevant data
+    formData.append('company',job.company);
     formData.append('requirements',job.requirements);
     formData.append('jobPosition',job.title);
     
     try {
       const token = Cookies.get('token'); 
+      console.log(job.company)
+      
       if(!token) console.log("No jwttoken") ;
       const response = await axios.post('http://localhost:5000/api/jobApplication/submit-form', formData, {
         headers: { 
@@ -31,12 +36,14 @@ export default function ApplicationForm() {
          },
         
       });
-
+      
       setMessage(response.data.message);
       console.log("Success");
+      navigate('/candidate/dashboard');
     } catch (error) {
       // setMessage('Error uploadng resume');
-      console.log("Error: ",error);
+      console.log("Error: ",error.response.data);
+      setMessage(error.response.data.message)
     }
   };
 
