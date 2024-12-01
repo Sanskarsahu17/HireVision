@@ -1,21 +1,48 @@
-import React from "react";
+import React,{useState} from "react";
 import { Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
+import axios from "axios";
 
 export default function SignUpForm() {
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    toast.success("Account created successfully!");
-    navigate("/profile");
+    try {
+      await axios.post('http://localhost:5000/api/authentication/register', formData);
+      console.log(formData);
+      toast.success("Account created successfully!");
+      navigate("/auth");
+    } catch (error) {
+      console.error('Registration failed', error);
+    }
+  
   };
 
   return (
     <form onSubmit={handleSubmit} className='space-y-4'>
       <InputField
+        name = "name"
+        value={formData.name}
+        onChange={handleChange}
         icon={User}
         type='text'
         placeholder='Enter your full name'
@@ -23,6 +50,9 @@ export default function SignUpForm() {
       />
 
       <InputField
+        name = "email"
+        value={formData.email}
+        onChange={handleChange}
         icon={Mail}
         type='email'
         placeholder='Enter your email'
@@ -30,6 +60,9 @@ export default function SignUpForm() {
       />
 
       <InputField
+        name = "password"
+        value={formData.password}
+        onChange={handleChange}
         icon={Lock}
         type='password'
         placeholder='Create a password'

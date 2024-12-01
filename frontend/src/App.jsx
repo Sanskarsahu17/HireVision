@@ -9,7 +9,10 @@ import HRDashboard from "./pages/hr/HRDashboard";
 import CandidateDashboard from "./pages/candidate/CandidateDashboard";
 import ProfilePage from "./pages/profile/ProfilePage";
 import AuthPage from "./pages/auth/AuthPage";
+
 import InterviewPage from "./pages/interview/InterviewPage";
+
+import ApplicationForm from "./pages/jobDescription/ApplicationForm";
 
 const App = () => {
   const userRole = "candidate"; // Replace with actual role logic
@@ -38,6 +41,8 @@ const App = () => {
         <Route path='/auth' element={<AuthPage />} />
         <Route path='/jobs' element={<JobListings />} />
         <Route path='/job/:id' element={<JobDescription />} />
+        <Route path='/apply' element={<ApplicationForm />} />
+        <Route path='/candidate/dashboard' element={<CandidateDashboard />} />
 
         {/* Protected Routes */}
         {/* {isAuthenticated ? (

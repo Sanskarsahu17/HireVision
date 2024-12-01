@@ -9,12 +9,12 @@ const router = express.Router();
 router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, res) => {
     try{
         const {email } = req.user; // Extracted from token
-
+        const {requirements,jobPosition} = req.body
         
         // const {requirements,jobPosition} = req.body;
-        const requirements = 'Hello';
-        const jobPosition = 'hwllo';
-        const resumePath = `uploads/${email}-${Date.now()}-${req.file.originalname}`;
+        // const requirements = 'Hello';
+        // const jobPosition = 'hwllo';
+        const resumePath = req.resumePath;
         
         // Save details in the db
         const newApplication = new appliedJobs({
