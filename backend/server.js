@@ -1,5 +1,6 @@
 const  express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const connectDB = require('./config/db');
 const authenticationRoutes = require('./routes/authenticationRoutes')
@@ -11,6 +12,7 @@ const app = express();
 connectDB();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser()); // Use cookie-parser middleware
 require('dotenv').config();
 
 // Serve static files from the "uploads" directory

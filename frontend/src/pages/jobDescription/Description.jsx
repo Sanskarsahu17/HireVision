@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
+
 import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -18,6 +20,7 @@ const iconMap = {
 
 export default function JobDescription() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const job = jobs.find((j) => j.id === id);
 
   if (!job) {
@@ -33,6 +36,10 @@ export default function JobDescription() {
       </div>
     );
   }
+
+  const handleApplyNow = () => {
+    navigate('/apply', { state: { job } }); // Pass job data to the form
+  };
 
   return (
     <div className='max-w-4xl mx-auto px-4 py-12  bg-gray-900'>
@@ -52,7 +59,7 @@ export default function JobDescription() {
               {job.company} • {job.location}
             </p>
           </div>
-          <button className='mt-4 md:mt-0 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium inline-flex items-center gap-2 transition-colors'>
+          <button onClick={handleApplyNow} className='mt-4 md:mt-0 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium inline-flex items-center gap-2 transition-colors'>
             Apply Now
             <ArrowRight className='w-4 h-4' />
           </button>
