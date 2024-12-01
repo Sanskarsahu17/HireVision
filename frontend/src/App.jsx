@@ -9,6 +9,7 @@ import HRDashboard from "./pages/hr/HRDashboard";
 import CandidateDashboard from "./pages/candidate/CandidateDashboard";
 import ProfilePage from "./pages/profile/ProfilePage";
 import AuthPage from "./pages/auth/AuthPage";
+import InterviewPage from "./pages/interview/InterviewPage";
 
 const App = () => {
   const userRole = "candidate"; // Replace with actual role logic
@@ -52,6 +53,18 @@ const App = () => {
         <Route path='/profile' element={<ProfilePage />} />
 
         {/* Catch-All Route */}
+        <Route path='*' element={<div>404 - Page Not Found</div>} />
+      </Routes>
+
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/auth' element={<AuthPage />} />
+        <Route path='/jobs' element={<JobListings />} />
+        <Route path='/job/:id' element={<JobDescription />} />
+        <Route path='/dashboard' element={<CandidateDashboard />} />
+        <Route path='/hr-dashboard' element={<HRDashboard />} />
+        <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/interview' element={<InterviewPage />} />
         <Route path='*' element={<div>404 - Page Not Found</div>} />
       </Routes>
     </div>
