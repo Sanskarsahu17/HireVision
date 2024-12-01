@@ -18,3 +18,7 @@ img {
   max-width: 100%;
   height: auto;
 }
+/* Instead of -ms-high-contrast-adjust */
+element {
+  forced-color-adjust: auto;
+}
