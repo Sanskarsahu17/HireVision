@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Upload, Loader2 } from "lucide-react";
 import Cookies from "js-cookie";
+
 import axios from "axios";
+import { submitApplication } from "../../utils/api";
 
 export default function ApplicationForm({ job, onSuccess }) {
   const navigate = useNavigate();
@@ -37,32 +39,10 @@ export default function ApplicationForm({ job, onSuccess }) {
     formData.append("jobPosition", job.title);
 
     try {
-      console.log(job);
-      console.log(token);
-      console.log("trying to submit");
-      if (!token) console.log("No jwttoken");
-      const API_URL = "http://localhost:5000/api/jobApplication/submit-form";
-      console.log("Submitting to URL:", API_URL);
+      await submitApplication(formData, job);
 
-      console.log("Form Data Contents:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
-
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      };
-      console.log("Headers:", headers);
-
-      const response = await axios.post(API_URL, formData, {
-        headers,
-        validateStatus: false,
-        maxBodyLength: Infinity,
-        maxContentLength: Infinity,
-      });
-
-      console.log("Response received:", response);
+      toast.success("Application submitted successfully!");
+      onSuccess();
 
       toast.success("Application submitted successfully!");
       onSuccess();

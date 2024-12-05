@@ -10,7 +10,14 @@ import {
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
 
-function NavItem({ to, icon: Icon, label, onClick, isButton = false }) {
+function NavItem({
+  to,
+  icon: Icon,
+  label,
+  onClick,
+  isButton = false,
+  className = "",
+}) {
   const Tag = isButton ? "button" : Link;
   return (
     <Tag
@@ -18,7 +25,7 @@ function NavItem({ to, icon: Icon, label, onClick, isButton = false }) {
       onClick={onClick}
       className={`flex items-center gap-2 text-slate-300 hover:text-white transition-colors ${
         isButton ? "px-4 py-2 text-sm" : ""
-      }`}
+      } ${className}`}
     >
       {Icon && <Icon className='w-4 h-4' />}
       {label}
@@ -34,12 +41,12 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     const currentPath = location.pathname;
-    navigate(currentPath === "/" || currentPath === "/jobs" ? "/auth" : "/");
+    navigate(currentPath === "/" || currentPath === "/job/:id" ? "/auth" : "/");
   };
 
   return (
     <motion.nav
-      className='sticky top-0 w-full z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800'
+      className='navbar sticky top-0 w-full z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800'
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}

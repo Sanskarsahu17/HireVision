@@ -1,3 +1,8 @@
+import Cookies from "js-cookie";
+import axios from "axios";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+
 export async function fetchQuestion(id) {
   try {
     const response = await fetch(
@@ -77,33 +82,53 @@ export function simulateTranscription(onTranscriptionUpdate) {
 //   }
 // }
 
-export async function submitApplication(formData) {
+export async function submitApplication(formData, job) {
+  // const navigate = useNavigate();
   const token = Cookies.get("token");
   if (!token) {
     throw new Error("Authentication required");
   }
 
   try {
-    const token = Cookies.get("token");
-    console.log("token: ", token);
-
+    console.log(job);
+    console.log(token);
+    console.log("trying to submit");
     if (!token) console.log("No jwttoken");
-    const response = await axios.post(
-      "http://localhost:5000/api/jobApplication/submit-form",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const API_URL = "http://localhost:5000/api/jobApplication/submit-form";
+    console.log("Submitting to URL:", API_URL);
 
-    setMessage(response.data.message);
+    console.log("Form Data Contents:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    };
+    console.log("Headers:", headers);
+
+    const response = await axios.post(API_URL, formData, {
+      headers,
+      validateStatus: false,
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity,
+    });
+
+    console.log("Response received:", response);
+
+    // setMessage(response.data.message);
     console.log("Success");
-    navigate("/candidate/dashboard");
+    // navigate("/candidate/dashboard");
   } catch (error) {
-    console.error("Error submitting application:", error);
+    console.error("Full error object:", error);
+    console.error("Response data:", error.response?.data);
+    console.error("Response status:", error.response?.status);
+
+    const errorMessage =
+      error.response?.data?.message || "Failed to submit application";
+    toast.error(errorMessage);
+    console.error("Application submission error:", error);
     throw new Error("Failed to submit application");
     // console.log("Error: ", error.response.data);
     setMessage(error.response.data.message);
