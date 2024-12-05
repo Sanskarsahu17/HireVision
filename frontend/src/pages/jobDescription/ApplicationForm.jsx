@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { toast } from "sonner";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -42,8 +43,18 @@ export default function ApplicationForm() {
       navigate('/candidate/dashboard');
     } catch (error) {
       // setMessage('Error uploadng resume');
+
       console.log("Error: ",error.response.data);
-      setMessage(error.response.data.message)
+      if(error.response.data.error=="Invalid or expired token") {
+        toast.error('You need to login again');
+        navigate('/auth');
+      }
+      if(error.response.data.message){
+        toast.error("You've already sybmitted resume");
+        navigate('/candidate/dashboard');
+      }
+      setMessage(error.response.data.message || error.response.data.error)
+      
     }
   };
 

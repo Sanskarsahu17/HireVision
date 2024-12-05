@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 import Navbar from "./components/common/Navbar";
 import HomePage from "./pages/landingPage/HomePage";
 import JobListings from "./pages/joblisting/JobListing";
@@ -54,6 +55,7 @@ const App = () => {
       </AuthProvider>
 
       <Routes></Routes>
+      <Toaster richColors='true'/>
     </div>
   );
 };

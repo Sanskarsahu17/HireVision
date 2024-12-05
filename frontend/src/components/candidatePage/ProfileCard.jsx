@@ -1,6 +1,7 @@
-import React from "react";
+import React,{useEffect} from "react";
 
 export default function ProfileCard({ candidate }) {
+  
   return (
     <div className='bg-slate-800/30 rounded-xl p-6 text-center'>
       <img

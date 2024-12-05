@@ -6,6 +6,7 @@ import ApplicationsTable from "../../components/candidatePage/ApplicationsTable"
 import Reminders from "../../components/candidatePage/Reminders";
 import Sidebar from "../../components/candidatePage/Sidebar";
 import CandidateTest from "../../components/candidatePage/submitResume";
+import axios from 'axios';
 
 const mockCandidate = {
   id: "1",
@@ -48,7 +49,33 @@ const mockReminders = [
   },
 ];
 
+
+
 export default function CandidateDashboard() {
+
+  const [applicationData,setAppliactionData] = useState([]);
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        // Fetch data from the backend API
+        const response = await axios.get('http://localhost:5000/api/dashboard/candidate', {
+          withCredentials: true, // Include cookies in the request
+        });
+        console.log(response.data.userProfile);
+        // const ApplicationData = response.data.userProfile;
+        setAppliactionData(response.data.userProfile);
+        console.log("data",applicationData.userProfile);
+      } catch (err) {
+        console.error('Error fetching applications:', err);
+        // setError(err.response?.data?.message || 'An error occurred');
+        console.log(err.response?.data?.message || 'An error occurred')
+      } 
+    };
+
+    fetchApplications();
+  }, []); // Empty dependency array ensures this runs once when the component mounts
+
   const isInTest = mockCandidate.currentStage === "TEST_IN_PROGRESS";
 
   if (isInTest) {
@@ -79,7 +106,7 @@ export default function CandidateDashboard() {
                 testProgress={mockCandidate.testProgress}
               />
 
-              <ApplicationsTable applications={mockCandidate.applications} />
+              <ApplicationsTable applications={applicationData} />
             </div>
 
             <div className='md:col-start-2'>

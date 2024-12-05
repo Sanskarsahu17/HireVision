@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 
+
 export default function ApplicationsTable({ applications }) {
   return (
     <div className='bg-slate-800/30 rounded-xl p-6'>
@@ -26,21 +27,21 @@ export default function ApplicationsTable({ applications }) {
           </thead>
           <tbody className='divide-y divide-slate-700'>
             {applications.map((application) => (
-              <tr key={application.id} className='text-slate-300'>
-                <td className='py-4'>{application.position}</td>
+              <tr key={application.__id} className='text-slate-300'>
+                <td className='py-4'>{application.jobPosition}</td>
                 <td className='py-4'>{application.company}</td>
-                <td className='py-4'>{application.appliedOn}</td>
+                <td className='py-4'>{application.uploadedAt.slice(0,10)}</td>
                 <td className='py-4'>
                   <span
                     className={`px-2.5 py-1 rounded-full text-sm ${
-                      application.status === "PENDING"
+                      application.applicationStatus === "PENDING" || "Pending"
                         ? "bg-yellow-500/20 text-yellow-300"
-                        : application.status === "SELECTED"
+                        : application.applicationStatus=== "SELECTED"
                         ? "bg-emerald-500/20 text-emerald-300"
                         : "bg-red-500/20 text-red-300"
                     }`}
                   >
-                    {application.status}
+                    {application.applicationStatus}
                   </span>
                 </td>
               </tr>

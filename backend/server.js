@@ -6,11 +6,15 @@ const connectDB = require('./config/db');
 const authenticationRoutes = require('./routes/authenticationRoutes')
 const appliedjob = require('./routes/appliedJob');
 const assesmentRoutes = require('./routes/AssessmentRoutes');
+const  getCandidate = require('./routes/getDetails');
 
 
 const app = express();
 connectDB();
-app.use(cors());
+app.use(cors(({
+    origin: 'http://localhost:5173', // Frontend URL
+    credentials: true,              // Allow credentials (cookies)
+  })));
 app.use(express.json());
 app.use(cookieParser()); // Use cookie-parser middleware
 require('dotenv').config();
@@ -22,6 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/authentication', authenticationRoutes);
 app.use('/api/jobApplication',appliedjob);
 app.use('/api/assessment',assesmentRoutes);
+app.use('/api/dashboard',getCandidate);
 
 
 const PORT = process.env.PORT || 5000;
