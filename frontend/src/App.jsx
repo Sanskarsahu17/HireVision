@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 import Navbar from "./components/common/Navbar";
 import HomePage from "./pages/landingPage/HomePage";
 import JobListings from "./pages/joblisting/JobListing";
@@ -36,20 +37,26 @@ const App = () => {
 
   return (
     <div className='bg-gray-900'>
-      <Navbar isAuthenticated={isAuthenticated} />
-      <Routes>
-        {/* Public Routes */}
-        <Route path='/' element={<HomePage />} />
-        <Route path='/auth' element={<AuthPage />} />
-        <Route path='/jobs' element={<JobListings />} />
-        <Route path='/job/:id' element={<JobDescription />} />
-        <Route path='/hr/dashboard' element={<HRDashboard />} />
-        <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/candidate/interview' element={<InterviewPage />} />
-        <Route path='/apply' element={<ApplicationForm />} />
-        <Route path='/candidate/dashboard' element={<CandidateDashboard />} />
-        <Route path='*' element={<div>404 - Page Not Found</div>} />
-      </Routes>
+      <AuthProvider>
+        {" "}
+        <Navbar isAuthenticated={isAuthenticated} />
+        <Routes>
+          {/* Public Routes */}
+          <Route path='/' element={<HomePage />} />
+          <Route path='/auth' element={<AuthPage />} />
+          <Route path='/jobs' element={<JobListings />} />
+          <Route path='/job/:id' element={<JobDescription />} />
+          <Route path='/hr/dashboard' element={<HRDashboard />} />
+          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/candidate/interview' element={<InterviewPage />} />
+          <Route path='/apply' element={<ApplicationForm />} />
+          <Route path='/candidate/dashboard' element={<CandidateDashboard />} />
+          <Route path='*' element={<div>404 - Page Not Found</div>} />
+        </Routes>
+      </AuthProvider>
+
+      <Routes></Routes>
+      <Toaster richColors='true' />
     </div>
   );
 };

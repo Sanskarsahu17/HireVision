@@ -9,6 +9,9 @@ const router = express.Router();
 router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, res) => {
     try{
         const {email } = req.user; // Extracted from token
+        // if(appliedJobs.findOne({email})){
+
+        // }
         const {requirements,jobPosition,company} = req.body
         
         // const {requirements,jobPosition} = req.body;
