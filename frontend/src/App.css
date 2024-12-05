@@ -22,3 +22,14 @@ img {
 element {
   forced-color-adjust: auto;
 }
+
+.navbar {
+  user-select: none; /* Prevent text selection */
+  -webkit-user-drag: none; /* Disable dragging for webkit browsers */
+  overscroll-behavior: contain; /* Prevent scrolling beyond navbar */
+}
+
+.navbar * {
+  user-select: none; /* Apply to child elements */
+  -webkit-user-drag: none; /* Disable dragging for webkit browsers */
+}

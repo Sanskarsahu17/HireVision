@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode"; // Changed this import
+import React from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   BrainCircuit,
   LayoutDashboard,
@@ -9,8 +8,30 @@ import {
   LogOut,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+
+function NavItem({
+  to,
+  icon: Icon,
+  label,
+  onClick,
+  isButton = false,
+  className = "",
+}) {
+  const Tag = isButton ? "button" : Link;
+  return (
+    <Tag
+      to={to}
+      onClick={onClick}
+      className={`flex items-center gap-2 text-slate-300 hover:text-white transition-colors ${
+        isButton ? "px-4 py-2 text-sm" : ""
+      } ${className}`}
+    >
+      {Icon && <Icon className='w-4 h-4' />}
+      {label}
+    </Tag>
+  );
+}
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -19,21 +40,13 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
-
-    // Get the current location
     const currentPath = location.pathname;
-
-    // If the user is on the home page or job listing page, stay on the same page
-    if (currentPath === "/" || currentPath === "/jobs") {
-      navigate("/auth");
-    } else {
-      navigate("/");
-    }
+    navigate(currentPath === "/" || currentPath === "/job/:id" ? "/auth" : "/");
   };
 
   return (
     <motion.nav
-      className='sticky top-0 w-full z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800'
+      className='navbar sticky top-0 w-full z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800'
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -53,60 +66,34 @@ export default function Navbar() {
           <div className='hidden md:flex items-center gap-8'>
             {isAuthenticated ? (
               <>
-                <button
-                  onClick={() => navigate(`/${userRole}/dashboard`)}
-                  className='text-slate-300 hover:text-white flex items-center gap-2'
-                >
-                  <LayoutDashboard className='w-4 h-4' />
-                  Dashboard
-                </button>
-
-                <button
-                  onClick={() => navigate("/profile")}
-                  className='text-slate-300 hover:text-white flex items-center gap-2'
-                >
-                  <UserCircle className='w-4 h-4' />
-                  Profile
-                </button>
-
-                <button
-                  onClick={() => navigate("/jobs")}
-                  className='text-slate-300 hover:text-white flex items-center gap-2'
-                >
-                  <Briefcase className='w-4 h-4' />
-                  Jobs
-                </button>
-
-                <button
+                <NavItem
+                  to={`/${userRole}/dashboard`}
+                  icon={LayoutDashboard}
+                  label='Dashboard'
+                />
+                <NavItem to='/profile' icon={UserCircle} label='Profile' />
+                <NavItem to='/jobs' icon={Briefcase} label='Jobs' />
+                <NavItem
+                  isButton
                   onClick={handleLogout}
-                  className='px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors'
-                >
-                  <LogOut className='w-4 h-4 mr-1 inline-block' />
-                  Logout
-                </button>
+                  icon={LogOut}
+                  label='Logout'
+                  className='bg-red-600 text-white rounded-lg hover:bg-red-700'
+                />
               </>
             ) : (
               <>
-                <button
-                  onClick={() => navigate("/jobs")}
-                  className='text-slate-300 hover:text-white flex items-center gap-2'
-                >
-                  <Briefcase className='w-4 h-4' />
-                  Jobs
-                </button>
-
-                <button
-                  onClick={() => navigate("/auth?type=login")}
-                  className='px-4 py-2 text-sm text-slate-300 hover:text-white'
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => navigate("/auth?type=signup")}
-                  className='px-4 py-2 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors'
-                >
-                  Sign Up
-                </button>
+                <NavItem to='/jobs' icon={Briefcase} label='Jobs' />
+                <NavItem
+                  to='/auth?type=login'
+                  label='Login'
+                  className='px-4 py-2'
+                />
+                <NavItem
+                  to='/auth?type=signup'
+                  label='Sign Up'
+                  className='px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700'
+                />
               </>
             )}
           </div>
