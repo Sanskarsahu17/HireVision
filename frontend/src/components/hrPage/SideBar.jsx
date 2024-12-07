@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { icon: <LayoutDashboard />, label: "Dashboard", path: "/hr" },
+  { icon: <LayoutDashboard />, label: "Dashboard", path: "/hr/dashboard" },
   { icon: <Users />, label: "Candidates", path: "/hr/candidates" },
-  { icon: <Briefcase />, label: "Job Postings", path: "/hr/jobs" },
+  { icon: <Briefcase />, label: "Job Postings", path: "/hr/jobpostings" },
   {
     icon: <MessageSquare />,
     label: "Messages",
@@ -21,7 +21,7 @@ const navItems = [
     badge: 3,
   },
   { icon: <Calendar />, label: "Interviews", path: "/hr/interviews" },
-  { icon: <BarChart2 />, label: "Analytics", path: "/hr/analytics" },
+  { icon: <BarChart2 />, label: "Reports", path: "/hr/reports" },
   { icon: <Settings />, label: "Settings", path: "/hr/settings" },
 ];
 

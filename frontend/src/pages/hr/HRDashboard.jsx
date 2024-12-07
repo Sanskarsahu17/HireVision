@@ -1,60 +1,41 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { Toaster } from "sonner";
 import Sidebar from "../../components/hrPage/SideBar";
-import DashboardStats from "../../components/hrPage/DashboardStats";
-import CandidateList from "../../components/hrPage/CandidateList";
-
-const mockData = {
-  stats: {
-    interviewsScheduled: 5,
-    resumesSubmitted: 100,
-  },
-  candidates: [
-    {
-      id: "APP001",
-      name: "Sarah Johnson",
-      role: "Frontend Developer",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      email: "sarah.j@example.com",
-      phone: "+12345678990",
-      applicationId: "APP001",
-      appliedDate: "2024-03-15",
-      status: "Shortlisted",
-    },
-  ],
-};
+import AnalyticsOverview from "../../components/hrPage/dashboard/AnalyticsOverview";
+import UpcomingInterviews from "../../components/hrPage/dashboard/UpcomingInterviews";
+import TeamTasks from "../../components/hrPage/dashboard/TeamTasks";
+import RecentActivity from "../../components/hrPage/dashboard/RecentActivity";
 
 export default function HRDashboard() {
-  const handleScheduleInterview = (candidate) => {
-    console.log("Schedule interview for:", candidate);
-  };
-
   return (
     <div className='min-h-screen bg-slate-900'>
+      <Toaster position='top-right' />
       <Sidebar />
-      <main className='ml-64 p-8'>
-        <h1 className='text-3xl font-bold text-white mb-8'>HR Dashboard</h1>
+
+      <div className='ml-64 p-8'>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className='mb-8'
+        >
+          <h1 className='text-3xl font-bold text-white'>HR Dashboard</h1>
+          <p className='text-slate-400'>
+            Overview of recruitment activities and team performance
+          </p>
+        </motion.div>
 
         <div className='space-y-8'>
-          <DashboardStats stats={mockData.stats} />
+          <AnalyticsOverview />
 
-          <div className='bg-slate-800/30 rounded-xl p-6'>
-            <div className='flex justify-between items-center mb-6'>
-              <h2 className='text-xl font-semibold text-white'>Meeting Link</h2>
-            </div>
-            <input
-              type='text'
-              placeholder='Paste the meeting link here for the candidates'
-              className='w-full bg-slate-700 text-slate-300 px-4 py-3 rounded-lg'
-            />
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+            <UpcomingInterviews />
+            <TeamTasks />
           </div>
 
-          <CandidateList
-            candidates={mockData.candidates}
-            onSchedule={handleScheduleInterview}
-          />
+          <RecentActivity />
         </div>
-      </main>
+      </div>
     </div>
   );
 }
