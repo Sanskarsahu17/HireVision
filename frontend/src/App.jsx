@@ -16,24 +16,26 @@ import InterviewPage from "./pages/interview/InterviewPage";
 import CandidateApplications from "./pages/candidate/candidateapplication/CandidateApplications";
 import ApplicationForm from "./components/jobDescription/ApplicationForm";
 import { AuthProvider } from "./context/AuthContext";
+import ScheduledInterview from "./components/candidatePage/scheduledInterview/ScheduledInterview";
+import MessagesPage from "./components/candidatePage/messagespage/messagesPage";
 
 const App = () => {
   const userRole = "candidate"; // Replace with actual role logic
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [userData, setUserData] = useState(null);
-  // useEffect(() => {
-  //   // Fetch user data if authenticated
-  //   if (isAuthenticated) {
-  //     fetchUserData();
-  //   }
-  // }, [isAuthenticated]);
+  useEffect(() => {
+    // Fetch user data if authenticated
+    if (isAuthenticated) {
+      fetchUserData();
+    }
+  }, [isAuthenticated]);
 
-  // const fetchUserData = async () => {
-  //   // Fetch user data from API
-  //   const response = await fetch("/api/user");
-  //   const data = await response.json();
-  //   setUserData(data);
-  // };
+  const fetchUserData = async () => {
+    // Fetch user data from API
+    const response = await fetch("/api/user");
+    const data = await response.json();
+    setUserData(data);
+  };
 
   return (
     <div className='bg-gray-900'>
@@ -52,6 +54,11 @@ const App = () => {
           path='/candidate/Applications'
           element={<CandidateApplications />}
         />
+        <Route
+          path='/candidate/scheduledinterviews'
+          element={<ScheduledInterview />}
+        />
+        <Route path='/candidate/messages' element={<MessagesPage />} />
         <Route path='/apply' element={<ApplicationForm />} />
         <Route path='/candidate/dashboard' element={<CandidateDashboard />} />
         <Route path='*' element={<div>404 - Page Not Found</div>} />

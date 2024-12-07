@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 import ApplicationCard from "../../../components/candidatePage/dashboardapplications/ApplicationCard";
 import StageProgress from "../../../components/candidatePage/dashboardapplications/StageProgress";
 import Sidebar from "../../../components/candidatePage/Sidebar";
-import { mockApplications, mockUser } from "../../../data/mockdata";
+import { mockApplications, mockUser } from "../../../data/mockData";
 import { Avatar } from "../../../components/ui/Avatar";
 
 const CandidateApplications = () => {
@@ -19,15 +19,7 @@ const CandidateApplications = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className='flex items-center gap-4 mb-8'
-          >
-            <Avatar name={mockUser.name} src={mockUser.avatar} size='lg' />
-            <div>
-              <h1 className='text-3xl font-bold text-white'>
-                Welcome back, {mockUser.name}
-              </h1>
-              <p className='text-slate-400'>{mockUser.role}</p>
-            </div>
-          </motion.div>
+          ></motion.div>
 
           <div className='grid gap-6'>
             {mockApplications.map((application, index) => (
