@@ -18,6 +18,12 @@ import ApplicationForm from "./components/jobDescription/ApplicationForm";
 import { AuthProvider } from "./context/AuthContext";
 import ScheduledInterview from "./components/candidatePage/scheduledInterview/ScheduledInterview";
 import MessagesPage from "./components/candidatePage/messagespage/messagesPage";
+import Messages from "./components/hrPage/sidebar/Messages";
+import Interviews from "./components/hrPage/sidebar/Interviews";
+import JobPostings from "./components/hrPage/sidebar/JobPosting";
+import Reports from "./components/hrPage/sidebar/Reports";
+import Settings from "./components/hrPage/sidebar/Settings";
+import CandidatesPage from "./pages/hr/CandidatesPage";
 
 const App = () => {
   const userRole = "candidate"; // Replace with actual role logic
@@ -62,6 +68,31 @@ const App = () => {
         <Route path='/apply' element={<ApplicationForm />} />
         <Route path='/candidate/dashboard' element={<CandidateDashboard />} />
         <Route path='*' element={<div>404 - Page Not Found</div>} />
+
+        <Route
+          path='/hr/messages'
+          element={isAuthenticated ? <Messages /> : <AuthPage />}
+        />
+        <Route
+          path='/hr/interviews'
+          element={isAuthenticated ? <Interviews /> : <AuthPage />}
+        />
+        <Route
+          path='/hr/jobpostings'
+          element={isAuthenticated ? <JobPostings /> : <AuthPage />}
+        />
+        <Route
+          path='/hr/reports'
+          element={isAuthenticated ? <Reports /> : <AuthPage />}
+        />
+        <Route
+          path='/hr/settings'
+          element={isAuthenticated ? <Settings /> : <AuthPage />}
+        />
+        <Route
+          path='/hr/candidates'
+          element={isAuthenticated ? <CandidatesPage /> : <AuthPage />}
+        />
       </Routes>
       <Toaster richColors='true' />
     </div>
