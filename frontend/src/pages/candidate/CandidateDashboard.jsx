@@ -1,117 +1,64 @@
-import React,{useState,useEffect} from "react";
+import React from "react";
+import { motion } from "framer-motion";
 import { Toaster } from "sonner";
-import ProfileCard from "../../components/candidatePage/ProfileCard";
-import ApplicationStatus from "../../components/candidatePage/ApplicationStatus";
-import ApplicationsTable from "../../components/candidatePage/ApplicationsTable";
-import Reminders from "../../components/candidatePage/Reminders";
 import Sidebar from "../../components/candidatePage/Sidebar";
-import CandidateTest from "../../components/candidatePage/submitResume";
-import axios from 'axios';
-
-const mockCandidate = {
-  id: "1",
-  name: "James Kinn",
-  role: "Middle UX/UI Designer",
-  avatar:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  applications: [
-    {
-      id: "1",
-      position: "Basics of Mobile UX",
-      company: "Bruno Scott",
-      appliedOn: "Feb 12",
-      status: "PENDING",
-    },
-    {
-      id: "2",
-      position: "Digital Design System",
-      company: "Bruno Scott",
-      appliedOn: "Feb 14",
-      status: "PENDING",
-    },
-    {
-      id: "3",
-      position: "Basics of Mobile UX",
-      company: "Bruno Scott",
-      appliedOn: "Feb 16",
-      status: "PENDING",
-    },
-  ],
-  currentStage: "TEST_PENDING",
-  testProgress: 34,
-};
-
-const mockReminders = [
-  {
-    id: "1",
-    message: "You have been selected for the next round",
-    type: "success",
-  },
-];
-
-
+import Analytics from "../../components/candidatePage/dashboard/Analytics";
+import SkillsInDemand from "../../components/candidatePage/dashboard/SkillsInDemand";
+import TechArticles from "../../components/candidatePage/dashboard/TestArticles";
+import {
+  dashboardStats,
+  skillsInDemand,
+  techArticles,
+} from "../../data/dashboardData";
+import { mockUser } from "../../data/mockData";
+import { Avatar } from "../../components/ui/Avatar";
 
 export default function CandidateDashboard() {
-
-  const [applicationData,setAppliactionData] = useState([]);
-
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        // Fetch data from the backend API
-        const response = await axios.get('http://localhost:5000/api/dashboard/candidate', {
-          withCredentials: true, // Include cookies in the request
-        });
-        console.log(response.data.userProfile);
-        // const ApplicationData = response.data.userProfile;
-        setAppliactionData(response.data.userProfile);
-        console.log("data",applicationData.userProfile);
-      } catch (err) {
-        console.error('Error fetching applications:', err);
-        // setError(err.response?.data?.message || 'An error occurred');
-        console.log(err.response?.data?.message || 'An error occurred')
-      } 
-    };
-
-    fetchApplications();
-  }, []); // Empty dependency array ensures this runs once when the component mounts
-
-  const isInTest = mockCandidate.currentStage === "TEST_IN_PROGRESS";
-
-  if (isInTest) {
-    return <CandidateTest testProgress={mockCandidate.testProgress || 0} />;
-  }
-
   return (
-    <div className=' bg-slate-900'>
+    <div className='bg-slate-900 min-h-screen'>
       <Toaster position='top-right' />
       <Sidebar />
+
       <div className='ml-64'>
         <div className='max-w-7xl mx-auto px-4 py-8'>
-          <div className=''>
-            {/* <div>
-              <ProfileCard candidate={mockCandidate} />
-            </div> */}
-
-            <div className='space-y-8   mt-0 overflow-hidden'>
-              <div>
-                <h1 className='text-3xl font-bold text-white'>Dashboard</h1>
-                <p className='text-slate-400'>
-                  Welcome back, {mockCandidate.name}
-                </p>
-              </div>
-
-              <ApplicationStatus
-                currentStage={mockCandidate.currentStage}
-                testProgress={mockCandidate.testProgress}
-              />
-
-              <ApplicationsTable applications={applicationData} />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className='flex items-center gap-4 mb-8'
+          >
+            <Avatar name={mockUser.name} src={mockUser.avatar} size='lg' />
+            <div>
+              <h1 className='text-3xl font-bold text-white'>
+                Welcome back, {mockUser.name}
+              </h1>
+              <p className='text-slate-400'>{mockUser.role}</p>
             </div>
+          </motion.div>
 
-            <div className='md:col-start-2'>
-              <Reminders reminders={mockReminders} />
-            </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Analytics stats={dashboardStats} />
+          </motion.div>
+
+          <div className='grid md:grid-cols-2 gap-8'>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <SkillsInDemand skills={skillsInDemand} />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <TechArticles articles={techArticles} />
+            </motion.div>
           </div>
         </div>
       </div>
