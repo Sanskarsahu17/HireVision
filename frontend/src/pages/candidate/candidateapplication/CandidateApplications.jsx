@@ -6,8 +6,13 @@ import StageProgress from "../../../components/candidatePage/dashboardapplicatio
 import Sidebar from "../../../components/candidatePage/Sidebar";
 import { mockApplications, mockUser } from "../../../data/mockData";
 import { Avatar } from "../../../components/ui/Avatar";
+import { useDashboardData } from "../../../hooks/useDashBoardData";
 
 const CandidateApplications = () => {
+  const { applications, error, loading } = useDashboardData();
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  console.log(applications);
   return (
     <div className='bg-slate-900'>
       <Toaster position='top-right' />

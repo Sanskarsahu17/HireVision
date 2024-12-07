@@ -54,7 +54,7 @@ export default function ApplicationForm({ job, onSuccess }) {
 
       const errorMessage =
         error.response?.data?.message || "Failed to submit application";
-      toast.error(errorMessage);
+      // toast.error(errorMessage);
       console.error("Application submission error:", error);
     } finally {
       setIsSubmitting(false);

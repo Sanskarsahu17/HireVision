@@ -110,7 +110,7 @@ export async function submitApplication(formData, job) {
 
     const response = await axios.post(API_URL, formData, {
       headers,
-      validateStatus: false,
+        
       maxBodyLength: Infinity,
       maxContentLength: Infinity,
     });
@@ -121,15 +121,17 @@ export async function submitApplication(formData, job) {
     console.log("Success");
     // navigate("/candidate/dashboard");
   } catch (error) {
-    console.error("Full error object:", error);
-    console.error("Response data:", error.response?.data);
-    console.error("Response status:", error.response?.status);
-
+    // console.error("Full error object:", error);
+    // console.error("Response data:", error.response?.data);
+    // console.error("Response status:", error.response?.status);
+    if(error.response.data.message){
+      toast.error("Application Already Submitted");
+    }
     const errorMessage =
       error.response?.data?.message || "Failed to submit application";
-    toast.error(errorMessage);
+    
     console.error("Application submission error:", error);
-    throw new Error("Failed to submit application");
+    
     // console.log("Error: ", error.response.data);
     setMessage(error.response.data.message);
   }
