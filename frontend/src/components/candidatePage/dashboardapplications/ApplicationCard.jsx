@@ -5,8 +5,14 @@ import { applicationStages } from "../../../data/mockData";
 import { Avatar } from "../../../components/ui/Avatar";
 
 export default function ApplicationCard({ application }) {
-  const stage = applicationStages[application.stage];
-
+  const stage = applicationStages[application.applicaitonStatus];
+  console.log(stage)
+  const date = new Date(application.uploadedAt);
+  const formattedDate = date.toLocaleDateString('en-US', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  });
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -18,7 +24,7 @@ export default function ApplicationCard({ application }) {
 
         <div className='flex-1'>
           <h3 className='text-lg font-semibold text-white'>
-            {application.position}
+            {application.jobPosition}
           </h3>
           <div className='flex items-center gap-2 text-slate-400 mt-1'>
             <Building2 className='w-4 h-4' />
@@ -26,7 +32,7 @@ export default function ApplicationCard({ application }) {
           </div>
           <div className='flex items-center gap-2 text-slate-400 mt-1'>
             <Calendar className='w-4 h-4' />
-            <span>Applied on {application.appliedDate}</span>
+            <span>Applied on {formattedDate}</span>
           </div>
 
           <div className='mt-4'>

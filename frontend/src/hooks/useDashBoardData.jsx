@@ -10,7 +10,7 @@ export const useDashboardData = () => {
     const fetchDashboardData = async () => {
       try {
         const data = await dashboardService();
-        setApplications(data); // Assuming the response is an array of applications
+        setApplications(data.userProfile); // Assuming the response is an array of applications
       } catch (err) {
         console.log(err);
         setError(err.message);

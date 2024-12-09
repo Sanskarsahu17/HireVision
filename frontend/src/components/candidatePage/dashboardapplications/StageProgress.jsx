@@ -1,11 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, XCircle } from "lucide-react";
-import { applicationStages } from "../../../data/mockdata";
+import { applicationStages } from "../../../data/mockData";
 
 export default function StageProgress({ currentStage }) {
-  const stage = applicationStages[currentStage];
 
+  const stage = applicationStages[currentStage];
+  console.log(stage)
   const getStageIcon = () => {
     switch (currentStage) {
       case "SELECTED":
