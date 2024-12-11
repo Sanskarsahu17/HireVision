@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -26,6 +27,7 @@ const navItems = [
 ];
 
 export default function Sidebar() {
+  const location = useLocation();
   return (
     <aside className='w-64 bg-slate-800/30 h-screen fixed left-0 top-0 p-4'>
       <h1 className='text-2xl font-bold text-white mb-8'>HR Portal</h1>
@@ -35,7 +37,11 @@ export default function Sidebar() {
           <Link
             key={item.label}
             to={item.path}
-            className='flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/30 px-4 py-3 rounded-lg transition-colors'
+            className={`flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/30 px-4 py-3 rounded-lg transition-colors ${
+              location.pathname === item.path
+                ? "bg-slate-700/30 text-white"
+                : ""
+            }`}
           >
             <div className='w-5 h-5'>{item.icon}</div>
             <span>{item.label}</span>
