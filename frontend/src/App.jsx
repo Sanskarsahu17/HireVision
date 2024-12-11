@@ -20,7 +20,7 @@ import ScheduledInterview from "./components/candidatePage/scheduledInterview/Sc
 import MessagesPage from "./components/candidatePage/messagespage/messagesPage";
 import Messages from "./components/hrPage/sidebar/Messages";
 import Interviews from "./components/hrPage/sidebar/Interviews";
-import JobPostings from "./components/hrPage/sidebar/JobPosting";
+import JobPostings from "./components/hrPage/sidebar/jobPosting/JobPosting";
 import Reports from "./components/hrPage/sidebar/Reports";
 import Settings from "./components/hrPage/sidebar/Settings";
 import CandidatesPage from "./pages/hr/CandidatesPage";

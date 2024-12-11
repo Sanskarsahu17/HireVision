@@ -59,7 +59,7 @@ export default function Navbar() {
             onClick={() => navigate("/")}
           >
             <BrainCircuit className='w-8 h-8 text-purple-500' />
-            <span className='text-xl font-bold text-white'>Nexus_AI</span>
+            <span className='text-xl font-bold text-white'>HireVision</span>
           </div>
 
           {/* Navigation Links */}
