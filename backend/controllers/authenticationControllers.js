@@ -34,8 +34,9 @@ const Login = async(req,res)=>{
           return res.status(500).json({ message: 'JWT secret missing' });
       }
 
-      const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.json({ token });
+      const token = jwt.sign({ id: user._id, email: user.email, role: user.user_role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const user_role = user.user_role;
+      res.json({ token,user_role });
   } catch (error) {
       console.error('Error logging in:', error);
       res.status(500).json({ message: 'Error logging in', error: error.message });

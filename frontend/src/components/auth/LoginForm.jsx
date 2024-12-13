@@ -3,6 +3,7 @@ import { Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
+
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -30,11 +31,18 @@ export default function LoginForm() {
         "http://localhost:5000/api/authentication/login",
         formData
       );
+      console.log("Response",response)
       const { token } = response.data;
       Cookies.set("token", token, { expires: 1 }); // Store the JWT token in cookies for 1 day
       console.log(token);
+      
       toast.success("Login successful!");
-      navigate("/candidate/dashboard");
+      if(response.data.user_role === 'recruiter'){
+        navigate('/hr/dashboard');
+      }
+      else {
+        navigate("/candidate/dashboard");
+      }
       window.dispatchEvent(new Event("storage"));
     } catch (error) {
       console.error("Login failed", error);

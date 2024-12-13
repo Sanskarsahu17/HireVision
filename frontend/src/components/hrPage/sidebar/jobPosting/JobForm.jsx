@@ -49,7 +49,7 @@ const JobForm = ({ onSubmit, initialData = {}, isEdit = false }) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-
+    console.log(data)
     // Transform text areas into arrays
     const processedData = {
       ...data,
