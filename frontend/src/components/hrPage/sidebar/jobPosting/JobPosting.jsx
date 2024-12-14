@@ -4,13 +4,13 @@ import JobCard from "./JobCard";
 import JobModal from "./JobModal";
 import { toast } from "react-hot-toast";
 
-const mockJobs = [
+const initialJobs = [
   {
     id: 1,
     title: "Senior Frontend Developer",
     department: "Engineering",
     location: "Remote",
-    type: "Full-time",
+    type: "full-time",
     applicants: 45,
     posted: "5 days ago",
     status: "Active",
@@ -52,18 +52,39 @@ const mockJobs = [
 ];
 
 export default function JobPostings() {
-  const [jobs, setJobs] = useState(mockJobs);
+  const [jobs, setJobs] = useState(initialJobs);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingJob(null);
+  const handleModal = (job = null) => {
+    setEditingJob(job);
+    setIsModalOpen(!isModalOpen);
   };
 
-  const handleEditJob = (job) => {
-    setEditingJob(job);
-    setIsModalOpen(true);
+  const handleSaveJob = (jobData) => {
+    if (editingJob) {
+      // Update existing job
+      setJobs(
+        jobs.map((job) =>
+          job.id === editingJob.id ? { ...jobData, id: job.id } : job
+        )
+      );
+      toast.success("Job updated successfully!");
+    } else {
+      // Create new job
+      setJobs([
+        ...jobs,
+        {
+          ...jobData,
+          id: Date.now(),
+          applicants: 0,
+          posted: "Just now",
+          status: "Active",
+        },
+      ]);
+      toast.success("Job created successfully!");
+    }
+    handleModal();
   };
 
   const handleDeleteJob = (jobId) => {
@@ -81,7 +102,7 @@ export default function JobPostings() {
           <div className='flex justify-between items-center mb-8'>
             <h1 className='text-3xl font-bold text-white'>Job Postings</h1>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => handleModal()}
               className='bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors'
             >
               Create New Job
@@ -93,7 +114,7 @@ export default function JobPostings() {
               <JobCard
                 key={job.id}
                 job={job}
-                onEdit={handleEditJob}
+                onEdit={() => handleModal(job)}
                 onDelete={handleDeleteJob}
               />
             ))}
@@ -101,11 +122,13 @@ export default function JobPostings() {
         </div>
       </main>
 
-      <JobModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        initialData={editingJob}
-      />
+      {isModalOpen && (
+        <JobModal
+          onClose={() => handleModal()}
+          onSave={handleSaveJob}
+          job={editingJob}
+        />
+      )}
     </div>
   );
 }
