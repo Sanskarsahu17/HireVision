@@ -3,6 +3,7 @@ import Sidebar from "../../SideBar";
 import JobCard from "./JobCard";
 import JobModal from "./JobModal";
 import { toast } from "react-hot-toast";
+import { usePostedJobs } from "../../../../hooks/hrDashboard";
 
 const initialJobs = [
   {
@@ -52,16 +53,18 @@ const initialJobs = [
 ];
 
 export default function JobPostings() {
+  const { jobsi, setJobsi, loading, error } = usePostedJobs();
   const [jobs, setJobs] = useState(initialJobs);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
-
+  console.log(jobsi);
   const handleModal = (job = null) => {
     setEditingJob(job);
     setIsModalOpen(!isModalOpen);
   };
 
   const handleSaveJob = (jobData) => {
+    console.log(jobData)
     if (editingJob) {
       // Update existing job
       setJobs(
@@ -82,6 +85,7 @@ export default function JobPostings() {
           status: "Active",
         },
       ]);
+      console.log("JOB created successfully");
       toast.success("Job created successfully!");
     }
     handleModal();
