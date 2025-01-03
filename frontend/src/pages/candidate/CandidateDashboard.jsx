@@ -10,7 +10,7 @@ import {
   skillsInDemand,
   techArticles,
 } from "../../data/dashboardData";
-import { mockUser } from "../../data/mockData";
+import { mockUser } from "../../data/mockdata.js";
 import { Avatar } from "../../components/ui/Avatar";
 
 export default function CandidateDashboard() {
