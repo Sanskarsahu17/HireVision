@@ -19,6 +19,18 @@ export const createJob = async() =>{
     });
     return response.data; // Axios automatically parses JSON responses
   } catch(error){
-    console.error("Error in creating job")
+    console.error("Error in creating job");
+  }
+}
+
+export const getJob = async()=>{
+  try{
+    const response = await axios.get('http://localhost:5000/api/hr-dashboard/Job-list',{ // change the url
+      withCredentials:true,
+    });
+    return response.data;
+  }
+  catch(error){
+    console.error("Error in fetching job: ",error);
   }
 }

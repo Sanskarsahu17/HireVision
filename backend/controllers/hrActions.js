@@ -39,7 +39,7 @@ const getHR = async(req,res)=>{
 
 const createJob = async(req,res)=>{
     try {
-
+      console.log(req.body); 
         const {
             title,
             department,
@@ -62,6 +62,8 @@ const createJob = async(req,res)=>{
         // 2. Verify and decode the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const email = decoded.email; // Assuming the token contains the `email` field
+        const company = user.find({email});
+        console.log(decoded);
     
         if (!email) {
           return res.status(400).json({ message: 'Invalid token' });
@@ -73,6 +75,7 @@ const createJob = async(req,res)=>{
         location,
         type,
         email,
+        company,
         salaryMin,
         salaryMax,
         description,
@@ -80,13 +83,78 @@ const createJob = async(req,res)=>{
         responsibilities,
         benefits,
         });
-    
+        await newJob.save();
+        console.log("hello");
         // 4. Return the applications
         res.status(200).json({ message: 'Job created successfully'});
       } catch (error) {
         console.error('Error:', error.message);
         res.status(500).json({ message: 'Internal server error', error: error.message });
       }
+}
+
+const updateJob = async(req,res)=>{
+  // need to add job._id field 
+  // after creating job list i will do this
+  try {
+
+    const {
+        title,
+        department,
+        location,
+        type,
+        salaryMin,
+        salaryMax,
+        description,
+        requirements,
+        responsibilities,
+        benefits,
+        
+      } = req.body;
+    // 1. Extract token from cookies
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication token is missing' });
+    }
+
+    // 2. Verify and decode the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const email = decoded.email; // Assuming the token contains the `email` field
+    const company = user.find({email:email});
+    console.log(decoded);
+
+    if (!email) {
+      return res.status(400).json({ message: 'Invalid token' });
+    }
+   
+    const newJob ={
+    title,
+    department,
+    location,
+    type,
+    email,
+    company,
+    salaryMin,
+    salaryMax,
+    description,
+    requirements,
+    responsibilities,
+    benefits,
+    };
+    // Updating the job
+    await Job.updateOne(
+      {email: email},
+      {$set:newJob},
+    );
+
+    console.log("hello");
+    // 4. Return the applications
+    res.status(200).json({ message: 'Job Updated successfully'});
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
 }
 
 const getCandidate = async(req,res)=>{
@@ -184,4 +252,35 @@ const checkEligibility = async (req, res) => {
     }
   };
 
-  module.exports = {getHR,getCandidate,createJob,checkEligibility};
+const getJobs = async(req,res)=>{
+  try{
+    // 1. Extract token from cookies
+    const token = req.cookies.token;
+    
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication token is missing' });
+    }
+     // 2. Verify and decode the token
+     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+     const email = decoded.email; // Assuming the token contains the `email` field
+ 
+     if (!email) {
+       return res.status(400).json({ message: 'Invalid token' });
+     }
+     // 3. Query MongoDB with the extracted email
+     const jobList = await Job.find({email});
+     console.log(jobList);
+
+     if (!jobList || jobList.length === 0) {
+      return res.status(404).json({ message: 'No Jobs have been created' });
+    }
+    res.status(200).json({ message: 'Applications retrieved successfully', jobList });
+
+  }
+  catch(error){
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+}
+
+  module.exports = {getHR,getCandidate,createJob,checkEligibility,getJobs};

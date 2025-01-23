@@ -4,89 +4,91 @@ import JobCard from "./JobCard";
 import JobModal from "./JobModal";
 import { toast } from "react-hot-toast";
 import { usePostedJobs } from "../../../../hooks/hrDashboard";
+import axios from "axios";
 
-const initialJobs = [
-  {
-    id: 1,
-    title: "Senior Frontend Developer",
-    department: "Engineering",
-    location: "Remote",
-    type: "full-time",
-    applicants: 45,
-    posted: "5 days ago",
-    status: "Active",
-    description: "We are looking for an experienced Frontend Developer...",
-    requirements: [
-      "5+ years of experience with React",
-      "Strong TypeScript skills",
-      "Experience with modern build tools",
-    ],
-    responsibilities: [
-      "Lead frontend development initiatives",
-      "Mentor junior developers",
-      "Architect scalable solutions",
-    ],
-    benefits: ["Competitive salary", "Remote work", "Health insurance"],
-  },
-  {
-    id: 2,
-    title: "Product Designer",
-    department: "Design",
-    location: "New York, NY",
-    type: "Full-time",
-    applicants: 28,
-    posted: "2 days ago",
-    status: "Active",
-    description: "Join our design team to create amazing user experiences...",
-    requirements: [
-      "3+ years of product design experience",
-      "Proficiency in Figma",
-      "Strong portfolio",
-    ],
-    responsibilities: [
-      "Create user-centered designs",
-      "Conduct user research",
-      "Collaborate with developers",
-    ],
-    benefits: ["Competitive salary", "Creative environment", "Career growth"],
-  },
-];
+
+// const initialJobs = [
+//   {
+//     id: 1,
+//     title: "Senior Frontend Developer",
+//     department: "Engineering",
+//     location: "Remote",
+//     type: "full-time",
+//     applicants: 45,
+//     posted: "5 days ago",
+//     status: "Active",
+//     description: "We are looking for an experienced Frontend Developer...",
+//     requirements: [
+//       "5+ years of experience with React",
+//       "Strong TypeScript skills",
+//       "Experience with modern build tools",
+//     ],
+//     responsibilities: [
+//       "Lead frontend development initiatives",
+//       "Mentor junior developers",
+//       "Architect scalable solutions",
+//     ],
+//     benefits: ["Competitive salary", "Remote work", "Health insurance"],
+//   },
+//   {
+//     id: 2,
+//     title: "Product Designer",
+//     department: "Design",
+//     location: "New York, NY",
+//     type: "Full-time",
+//     applicants: 28,
+//     posted: "2 days ago",
+//     status: "Active",
+//     description: "Join our design team to create amazing user experiences...",
+//     requirements: [
+//       "3+ years of product design experience",
+//       "Proficiency in Figma",
+//       "Strong portfolio",
+//     ],
+//     responsibilities: [
+//       "Create user-centered designs",
+//       "Conduct user research",
+//       "Collaborate with developers",
+//     ],
+//     benefits: ["Competitive salary", "Creative environment", "Career growth"],
+//   },
+// ];
 
 export default function JobPostings() {
-  const { jobsi, setJobsi, loading, error } = usePostedJobs();
-  const [jobs, setJobs] = useState(initialJobs);
+  const { jobs, setJobs, loading, error } = usePostedJobs();
+  // const [jobs, setJobs] = useState(initialJobs);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
-  console.log(jobsi);
+  console.log("Hello",jobs.jobList);
+  console.log(error);
   const handleModal = (job = null) => {
     setEditingJob(job);
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleSaveJob = (jobData) => {
+  const handleSaveJob = async(jobData,e) => {
     console.log(jobData)
     if (editingJob) {
       // Update existing job
-      setJobs(
-        jobs.map((job) =>
-          job.id === editingJob.id ? { ...jobData, id: job.id } : job
-        )
-      );
-      toast.success("Job updated successfully!");
+      // Patch data
     } else {
       // Create new job
-      setJobs([
-        ...jobs,
-        {
-          ...jobData,
-          id: Date.now(),
-          applicants: 0,
-          posted: "Just now",
-          status: "Active",
-        },
-      ]);
-      console.log("JOB created successfully");
-      toast.success("Job created successfully!");
+      // Post data
+      try{
+        const response = await axios.post(
+          "http://localhost:5000/api/hr-dashboard/job-posting",
+          jobData,
+          {
+            withCredentials: true
+          }
+        );
+        console.log("Response: ",response);
+      }
+      catch(error){
+        console.error("creating job failed", error);
+        toast.error("Create job failed. Please try again.");
+      }
+
     }
     handleModal();
   };

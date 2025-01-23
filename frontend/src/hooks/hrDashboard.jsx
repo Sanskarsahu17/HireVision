@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { hrInfo } from '../services/HRService';
+import { hrInfo,getJob } from '../services/HRService';
 
 export const useHRData = () => {
   const [applications, setApplications] = useState([]);
@@ -36,10 +36,9 @@ export const usePostedJobs = () => {
       const fetchJobs = async () => {
         setLoading(true);
         try {
-          const response = await axios.get("http://localhost:3000/api/jobs", {
-            withCredentials: true, // Include credentials (cookies) if required
-          });
-          setJobs(response); // Assuming the API returns jobs in `jobs` field
+          const response = await getJob(); // HRservices me url change
+          console.log("Response ",response);
+          setJobs(response.jobList); // Assuming the API returns jobs in `jobs` field
           setError(null);
         } catch (err) {
           console.error("Error fetching jobs:", err);
