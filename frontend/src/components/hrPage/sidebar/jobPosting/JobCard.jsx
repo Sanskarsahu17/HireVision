@@ -12,7 +12,9 @@ const JobCard = ({ job, onEdit, onDelete }) => {
           <div>
             <h3 className='text-xl font-semibold text-white mb-2'>
               {job.title}
+
             </h3>
+            
             <div className='flex gap-4 text-sm text-slate-400'>
               <span>{job.department}</span>
               <span>•</span>
@@ -30,7 +32,7 @@ const JobCard = ({ job, onEdit, onDelete }) => {
             <Edit className='w-5 h-5' />
           </button>
           <button
-            onClick={() => onDelete(job.id)}
+            onClick={() => onDelete(job._id)}
             className='p-2 text-slate-400 hover:text-red-400 transition-colors'
           >
             <Trash2 className='w-5 h-5' />
