@@ -3,7 +3,7 @@ import { MapPin, Clock, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function JobCard({
-  id,
+  _id,
   title,
   company,
   location,
@@ -45,7 +45,7 @@ export default function JobCard({
       <p className='text-slate-400 mb-6'>{description}</p>
 
       <Link
-        to={`/job/${id}`}
+        to={`/job/${_id}`}
         className='flex items-center gap-2 text-purple-400 hover:text-purple-300 font-medium transition-colors'
       >
         View Details

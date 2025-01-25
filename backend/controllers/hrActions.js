@@ -62,8 +62,10 @@ const createJob = async(req,res)=>{
         // 2. Verify and decode the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const email = decoded.email; // Assuming the token contains the `email` field
-        const company = user.find({email});
-        console.log(decoded);
+        const users = await user.findOne({ email }).select('companyName').lean();
+        const company = users.companyName;
+        console.log("Comapny: ",company)
+        // console.log(decoded);
     
         if (!email) {
           return res.status(400).json({ message: 'Invalid token' });

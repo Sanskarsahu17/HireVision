@@ -52,7 +52,7 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/auth' element={<AuthPage />} />
         <Route path='/jobs' element={<JobListings />} />
-        <Route path='/job/:id' element={<JobDescription />} />
+        <Route path='/job/:_id' element={<JobDescription />} />
         <Route path='/hr/dashboard' element={<HRDashboard />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/candidate/interview' element={<InterviewPage />} />

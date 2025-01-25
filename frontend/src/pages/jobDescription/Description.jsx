@@ -10,8 +10,9 @@ import {
   Share2,
 } from "lucide-react";
 import { toast } from "sonner";
-import { jobs } from "../../data/jobs";
+// import { jobs } from "../../data/jobs";
 import ApplicationModal from "../../components/jobDescription/ApplicationModal";
+import { useJobs1 } from "../../hooks/useJobs1";
 
 const iconMap = {
   Briefcase,
@@ -20,10 +21,15 @@ const iconMap = {
 };
 
 export default function JobDescription() {
-  const { id } = useParams();
+  const {jobs,loading,error} = useJobs1();
+  console.log(jobs);
+  const { _id } = useParams();
+  console.log("ID: ",_id);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const job = jobs.find((j) => j.id === id);
-
+  const job = jobs.find((j) => j._id === _id);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  console.log("Job finded: ",job)
   if (!job) {
     return (
       <div className='text-center py-16'>
@@ -94,7 +100,8 @@ export default function JobDescription() {
                   {job.type}
                 </span>
                 <span className='px-3 py-1 rounded-full bg-slate-700 text-slate-300 text-sm'>
-                  {job.posted}
+                  {/* {job.posted}  */}
+                  
                 </span>
               </div>
             </div>
@@ -145,16 +152,14 @@ export default function JobDescription() {
             <h2 className='text-2xl font-bold text-white mb-6'>Benefits</h2>
             <div className='grid md:grid-cols-3 gap-6'>
               {job.benefits.map((benefit, index) => {
-                const Icon = iconMap[benefit.icon];
+                
                 return (
                   <div key={index} className='bg-slate-800/30 p-6 rounded-lg'>
-                    <div className='w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4'>
-                      <Icon className='w-6 h-6 text-purple-400' />
-                    </div>
-                    <h3 className='text-lg font-semibold text-white mb-2'>
-                      {benefit.title}
-                    </h3>
-                    <p className='text-slate-400'>{benefit.description}</p>
+                    
+                    {/* <h3 className='text-lg font-semibold text-white mb-2'>
+                      {benefit}
+                    </h3> */}
+                    <p className='text-slate-400'>{benefit}</p>
                   </div>
                 );
               })}
