@@ -110,7 +110,7 @@ export async function submitApplication(formData, job) {
 
     const response = await axios.post(API_URL, formData, {
       headers,
-        
+      withCredentials: true,
       maxBodyLength: Infinity,
       maxContentLength: Infinity,
     });

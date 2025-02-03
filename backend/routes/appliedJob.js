@@ -1,6 +1,7 @@
 const express = require('express');
 const appliedJobs = require('../models/appliedJobs');
 const upload = require('../middleware/uploadMiddleware');
+const jwt = require('jsonwebtoken');
 const authenticateJWT = require('../middleware/authenticateJWT');
 
 
@@ -8,9 +9,15 @@ const router = express.Router();
 
 router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, res) => {
     try{
-        const {email } = req.user; // Extracted from token
+        
         // if(appliedJobs.findOne({email})){
-
+        const token = req.cookies.token;
+        if (!token) {
+          return res.status(401).json({ message: 'Authentication token is missing' });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const email = decoded.email; // Assuming the token contains the `email` field
+      console.log("Req-body",req.body);
         // }
         const {requirements,jobPosition,company} = req.body
         
@@ -31,6 +38,7 @@ router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, 
           await newApplication.save();
           res.status(201).json({ message: 'Resume uploaded successfully!', newApplication });
     }catch(error){
+        
         res.status(500).json({ message: error.message });
     }
   });
