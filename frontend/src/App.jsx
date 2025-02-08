@@ -15,6 +15,7 @@ import InterviewPage from "./pages/interview/InterviewPage";
 
 import CandidateApplications from "./pages/candidate/candidateapplication/CandidateApplications";
 import ApplicationForm from "./components/jobDescription/ApplicationForm";
+import Results from "./components/interview/Results";
 import { AuthProvider } from "./context/AuthContext";
 import ScheduledInterview from "./components/candidatePage/scheduledInterview/ScheduledInterview";
 import MessagesPage from "./components/candidatePage/messagespage/messagesPage";
@@ -56,6 +57,7 @@ const App = () => {
         <Route path='/hr/dashboard' element={<HRDashboard />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/candidate/interview' element={<InterviewPage />} />
+        <Route path='/candidate/interview/results' element={<Results />} />
         <Route
           path='/candidate/Applications'
           element={<CandidateApplications />}
