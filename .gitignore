@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -23,6 +24,30 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
 
-# backend
+# Backend specific
 backend/.env
+backend/node_modules
+backend/logs
+
+# Frontend specific
+frontend/.env
+frontend/node_modules
+frontend/build
+frontend/dist
+
+# IDE specific
+.vscode
+.idea
+*.sublime-workspace
+*.sublime-project
+
+# OS specific
+.DS_Store
+Thumbs.db
