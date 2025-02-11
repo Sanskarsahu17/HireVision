@@ -25,6 +25,7 @@ import JobPostings from "./components/hrPage/sidebar/jobPosting/JobPosting";
 import Reports from "./components/hrPage/sidebar/Reports";
 import Settings from "./components/hrPage/sidebar/Settings";
 import CandidatesPage from "./pages/hr/CandidatesPage";
+import Testing from "./components/hrPage/sidebar/candidates/Testing";
 
 const App = () => {
   const userRole = "candidate"; // Replace with actual role logic
@@ -58,6 +59,7 @@ const App = () => {
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/candidate/interview' element={<InterviewPage />} />
         <Route path='/candidate/interview/results' element={<Results />} />
+        <Route path='/hr/dashboard/student/testing' element={<Testing/>} />
         <Route
           path='/candidate/Applications'
           element={<CandidateApplications />}
