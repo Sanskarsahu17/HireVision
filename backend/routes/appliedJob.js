@@ -19,7 +19,7 @@ router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, 
         const email = decoded.email; // Assuming the token contains the `email` field
       console.log("Req-body",req.body);
         // }
-        const {requirements,jobPosition,company} = req.body
+        const {requirements,jobPosition,company,recruiterEmail} = req.body
         
         // const {requirements,jobPosition} = req.body;
         // const requirements = 'Hello';
@@ -33,6 +33,7 @@ router.post('/submit-form', authenticateJWT,upload.single('resume'), async(req, 
             requirements,
             jobPosition,
             company,
+            recruiterEmail,
           });
 
           await newApplication.save();

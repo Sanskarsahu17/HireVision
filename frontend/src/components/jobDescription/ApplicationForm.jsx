@@ -37,6 +37,7 @@ export default function ApplicationForm({ job, onSuccess }) {
     formData.append("company", job.company);
     formData.append("requirements", job.requirements);
     formData.append("jobPosition", job.title);
+    formData.append("recruiterEmail",job.email);
 
     try {
       await submitApplication(formData, job);

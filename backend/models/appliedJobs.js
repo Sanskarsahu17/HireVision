@@ -13,6 +13,7 @@ const appliedJobs = new mongoose.Schema({
     enum: [0, 1, 2, 3, 4], // 0: under-review 1: shortlisted 2: Interview-scheduled 3:Selected 4: Rejected
     default: 0 
   },
+  recruiterEmail:{type: String,required:true},
 });
 appliedJobs.index({ email: 1, company: 1, jobPosition: 1 }, { unique: true });
 module.exports = mongoose.model('appliedJobs_nexusAI', appliedJobs);
