@@ -1,6 +1,6 @@
 const express = require('express');
 const authenticateJWT = require('../middleware/authenticateJWT')
-const {getHR,getCandidate,createJob,checkEligibility,getJobs,updateJob,deleteJob} = require('../controllers/hrActions')
+const {getHR,getCandidate,createJob,checkEligibility,getJobs,updateJob,deleteJob,getAppliedCandidates} = require('../controllers/hrActions')
 // const {getCandidate} = require('../controllers/getCandidate.js');
 
 const router = express.Router();
@@ -12,5 +12,6 @@ router.get('/Job-list',getJobs);
 router.delete('/deleteJob/:jobId',deleteJob)
 router.get('/candidateApplied',getCandidate);
 router.get('/checkEligibility',checkEligibility);
+router.get('/getAppliedCandidate',getAppliedCandidates);
 
 module.exports = router;

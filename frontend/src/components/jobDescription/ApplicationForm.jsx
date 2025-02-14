@@ -34,6 +34,7 @@ export default function ApplicationForm({ job, onSuccess }) {
     formData.append("resume", resume);
     // formData.append('message', message);
     // formData.append('jobId', job.id); // Include job ID or any other relevant data
+    formData.append("jobId",job._id);
     formData.append("company", job.company);
     formData.append("requirements", job.requirements);
     formData.append("jobPosition", job.title);

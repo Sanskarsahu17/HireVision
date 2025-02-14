@@ -34,3 +34,15 @@ export const getJob = async()=>{
     console.error("Error in fetching job: ",error);
   }
 }
+
+export const getAppliedCandidate = async()=>{
+  try{
+    const response = await axios.get('http://localhost:5000/api/hr-dashboard/getAppliedCandidate',{
+      withCredentials:true,
+    });
+    return response.data;
+  }
+  catch(error){
+    console.error("Error in fetching applied candidates: ",error);
+  }
+}

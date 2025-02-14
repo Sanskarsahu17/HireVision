@@ -158,9 +158,15 @@ const deleteJob = async (req, res) => {
     // 4. Find and delete the job based on the job ID and the user's email
     const job = await Job.findOneAndDelete({ _id: jobId, email });
 
+    
+    
+
     if (!job) {
       return res.status(404).json({ message: 'Job not found or not authorized to delete' });
     }
+
+    // 5. FInd and delete all the applied jobs form the appliedJob collection 
+    await appliedJobs.deleteMany({jobId});
 
     res.status(200).json({ message: 'Job deleted successfully' });
   } catch (error) {
@@ -304,4 +310,42 @@ const getJobs = async(req,res)=>{
   }
 }
 
-  module.exports = {getHR,getCandidate,createJob,checkEligibility,getJobs,updateJob,deleteJob};
+const getAppliedCandidates = async(req,res)=>{
+  try{
+    // 1. Extract token from cookies
+    const token = req.cookies.token;
+    
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication token is missing' });
+    }
+     // 2. Verify and decode the token
+     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+     const email = decoded.email; // Assuming the token contains the `email` field
+ 
+     if (!email) {
+       return res.status(400).json({ message: 'Invalid token' });
+     }
+     // 3. Query MongoDB with the extracted email
+     const jobsPosted = await Job.find({email}).select("_id");
+     
+
+     const jobApplications = await Promise.all(
+      jobsPosted.map(element => 
+        appliedJobs.find({ jobId:element._id })
+      )
+    );
+     console.log("checking",jobApplications);
+
+     if (!jobsPosted || jobsPosted.length === 0) {
+      return res.status(404).json({ message: 'No Jobs have been created' });
+    }
+    res.status(200).json({ message: 'Applications retrieved successfully', data:jobApplications });
+
+  }
+  catch(error){
+    console.error('Error:', error.message);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+}
+
+  module.exports = {getHR,getCandidate,createJob,checkEligibility,getJobs,updateJob,deleteJob,getAppliedCandidates};

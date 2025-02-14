@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { hrInfo,getJob } from '../services/HRService';
+import { hrInfo,getJob,getAppliedCandidate } from '../services/HRService';
 
 export const useHRData = () => {
   const [applications, setApplications] = useState([]);
@@ -54,3 +54,30 @@ export const usePostedJobs = () => {
   
     return { jobs, setJobs, loading, error };
   };
+
+export const getCandidate=()=>{
+  const[data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchAppliedCandidate = async () => {
+      setLoading(true);
+      try {
+        const response = await getAppliedCandidate(); 
+        console.log("Response ",response);
+        setData(response.data); 
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching applied candidates", err);
+        setError(err.message || "Error to fetch applied candidates.");
+        toast.error("Failed to fetch can.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppliedCandidate();
+  }, []);
+
+  return { data, setData, loading, error };
+}

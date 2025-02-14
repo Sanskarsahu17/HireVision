@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const appliedJobs = new mongoose.Schema({
+  jobId: { type: mongoose.Schema.Types.ObjectId, ref: "Job", required: true }, // Foreign key reference to Job
   email: { type: String, required: true }, // Applicant's email
   resumePath: { type: String, required: true }, // Path to the uploaded resume
   uploadedAt: { type: Date, default: Date.now }, // Timestamp
@@ -15,5 +16,5 @@ const appliedJobs = new mongoose.Schema({
   },
   recruiterEmail:{type: String,required:true},
 });
-appliedJobs.index({ email: 1, company: 1, jobPosition: 1 }, { unique: true });
+appliedJobs.index({ email: 1, jobId: 1 }, { unique: true });
 module.exports = mongoose.model('appliedJobs_nexusAI', appliedJobs);
