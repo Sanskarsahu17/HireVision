@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { hrInfo,getJob,getAppliedCandidate } from '../services/HRService';
+import { hrInfo, getJob, getAppliedCandidate } from "../services/HRService";
 
 export const useHRData = () => {
   const [applications, setApplications] = useState([]);
@@ -28,44 +28,44 @@ export const useHRData = () => {
 };
 
 export const usePostedJobs = () => {
-    const [jobs, setJobs] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-  
-    useEffect(() => {
-      const fetchJobs = async () => {
-        setLoading(true);
-        try {
-          const response = await getJob(); // HRservices me url change
-          console.log("Response ",response);
-          setJobs(response.jobList); // Assuming the API returns jobs in `jobs` field
-          setError(null);
-        } catch (err) {
-          console.error("Error fetching jobs:", err);
-          setError(err.message || "Failed to fetch jobs.");
-          toast.error("Failed to fetch job postings.");
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchJobs();
-    }, []);
-  
-    return { jobs, setJobs, loading, error };
-  };
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export const getCandidate=()=>{
-  const[data, setData] = useState([]);
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setLoading(true);
+      try {
+        const response = await getJob(); // HRservices me url change
+        console.log("Response ", response);
+        setJobs(response.jobList); // Assuming the API returns jobs in `jobs` field
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+        setError(err.message || "Failed to fetch jobs.");
+        toast.error("Failed to fetch job postings.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  return { jobs, setJobs, loading, error };
+};
+
+export const getCandidate = () => {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
     const fetchAppliedCandidate = async () => {
       setLoading(true);
       try {
-        const response = await getAppliedCandidate(); 
-        console.log("Response ",response);
-        setData(response.data); 
+        const response = await getAppliedCandidate();
+        console.log("Response  for the job request ", response);
+        setData(response.data);
         setError(null);
       } catch (err) {
         console.error("Error fetching applied candidates", err);
@@ -80,4 +80,4 @@ export const getCandidate=()=>{
   }, []);
 
   return { data, setData, loading, error };
-}
+};

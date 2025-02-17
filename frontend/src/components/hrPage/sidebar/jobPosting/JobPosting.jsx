@@ -6,80 +6,36 @@ import { toast } from "react-hot-toast";
 import { usePostedJobs } from "../../../../hooks/hrDashboard";
 import axios from "axios";
 
-
-// const initialJobs = [
-//   {
-//     id: 1,
-//     title: "Senior Frontend Developer",
-//     department: "Engineering",
-//     location: "Remote",
-//     type: "full-time",
-//     applicants: 45,
-//     posted: "5 days ago",
-//     status: "Active",
-//     description: "We are looking for an experienced Frontend Developer...",
-//     requirements: [
-//       "5+ years of experience with React",
-//       "Strong TypeScript skills",
-//       "Experience with modern build tools",
-//     ],
-//     responsibilities: [
-//       "Lead frontend development initiatives",
-//       "Mentor junior developers",
-//       "Architect scalable solutions",
-//     ],
-//     benefits: ["Competitive salary", "Remote work", "Health insurance"],
-//   },
-//   {
-//     id: 2,
-//     title: "Product Designer",
-//     department: "Design",
-//     location: "New York, NY",
-//     type: "Full-time",
-//     applicants: 28,
-//     posted: "2 days ago",
-//     status: "Active",
-//     description: "Join our design team to create amazing user experiences...",
-//     requirements: [
-//       "3+ years of product design experience",
-//       "Proficiency in Figma",
-//       "Strong portfolio",
-//     ],
-//     responsibilities: [
-//       "Create user-centered designs",
-//       "Conduct user research",
-//       "Collaborate with developers",
-//     ],
-//     benefits: ["Competitive salary", "Creative environment", "Career growth"],
-//   },
-// ];
-
 export default function JobPostings() {
   const { jobs, setJobs, loading, error } = usePostedJobs();
-  // const [jobs, setJobs] = useState(initialJobs);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
   console.log("Job Lists: ", jobs.jobLists);
-  console.log(error);
+
   const handleModal = (job = null) => {
     setEditingJob(job);
     setIsModalOpen(!isModalOpen);
   };
 
   const handleSaveJob = async (jobData, e) => {
-    console.log(jobData)
+    console.log(jobData);
     if (editingJob) {
       // Update existing job
       // Patch data
       try {
         // Make the PUT request to update the job
-        const response = await axios.put(`http://localhost:5000/api/hr-dashboard/updateJob/${editingJob._id}`, jobData, { withCredentials: true });
+        const response = await axios.put(
+          `http://localhost:5000/api/hr-dashboard/updateJob/${editingJob._id}`,
+          jobData,
+          { withCredentials: true }
+        );
         // onUpdate(response.data.updatedJob); // Update the parent component state with the updated job
         console.log("Update response: ", response);
-        alert('Job updated successfully');
+        alert("Job updated successfully");
       } catch (error) {
-        console.error('Error updating the job:', error);
-        alert('Failed to update the job');
+        console.error("Error updating the job:", error);
+        alert("Failed to update the job");
       }
     } else {
       // Create new job
@@ -89,16 +45,14 @@ export default function JobPostings() {
           "http://localhost:5000/api/hr-dashboard/job-posting",
           jobData,
           {
-            withCredentials: true
+            withCredentials: true,
           }
         );
         console.log("Response: ", response);
-      }
-      catch (error) {
+      } catch (error) {
         console.error("creating job failed", error);
         toast.error("Create job failed. Please try again.");
       }
-
     }
     handleModal();
   };
@@ -106,15 +60,14 @@ export default function JobPostings() {
   const handleDeleteJob = async (jobId) => {
     if (window.confirm("Are you sure you want to delete this job posting?")) {
       try {
-        const response = await axios.delete(`http://localhost:5000/api/hr-dashboard/deleteJob/${jobId}`, { withCredentials: true });
+        const response = await axios.delete(
+          `http://localhost:5000/api/hr-dashboard/deleteJob/${jobId}`,
+          { withCredentials: true }
+        );
         console.log("DElete job response: ", response);
         setJobs(jobs.filter((job) => job._id !== jobId));
         toast.success(response);
-      }
-      catch (error) {
-
-      }
-
+      } catch (error) {}
     }
   };
 
