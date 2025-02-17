@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: hirevision-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: nodemon server.js
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://sanskarsahu1704:E57ftRjVYbR5opHM@cluster0.hdsh9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
