@@ -14,11 +14,13 @@ import Sbutton from "../../../common/Sbutton";
 
 export default function CandidateList({ candidates }) {
   const statusMapping = {
-    0: { label: "Pending", bgColor: "bg-yellow-500" },
+    0: { label: "Under-Review", bgColor: "bg-yellow-500" },
     1: { label: "Accepted", bgColor: "bg-green-500" },
-    2: { label: "Rejected", bgColor: "bg-red-500" },
-    3: { label: "Under Review", bgColor: "bg-blue-500" },
+    2: { label: "Interview-scheduled", bgColor: "bg-red-500" },
+    3: { label: "Selected", bgColor: "bg-blue-500" },
+    4: {label: "Rejected", bgColor: "bg-blue-500"},
   };
+  console.log("Candidates checking: ",candidates);
   return (
     <div className='mt-4'>
       {candidates.map((candidate) => (
@@ -39,7 +41,8 @@ export default function CandidateList({ candidates }) {
           <div className='text-slate-400 flex  items-center '>
             Status:
             <span className={`ml-2 px-2 py-1 rounded `}>
-              {<p>{statusMapping[candidate.applicaitonStatus].label} </p>}
+              {/* {<p>{statusMapping[candidate.applicaitonStatus].label} </p>} */}
+              {<p>{statusMapping[candidate.applicaitonStatus].label}</p>}
             </span>
           </div>{" "}
           <p className='text-slate-400'>
@@ -54,7 +57,7 @@ export default function CandidateList({ candidates }) {
             >
               View Resume
             </a>
-            <Sbutton text=' Check for Eligibility' />
+            {/* <Sbutton text=' Check for Eligibility' /> */}
           </div>
         </motion.div>
       ))}

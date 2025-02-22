@@ -4,6 +4,7 @@ import Sidebar from "../../components/hrPage/SideBar";
 import { getCandidate } from "../../hooks/hrDashboard";
 import JobSelector from "../../components/hrPage/sidebar/candidates/JobSelector";
 import CandidateList from "../../components/hrPage/sidebar/candidates/candidateList";
+import CheckButton from "../../components/hrPage/sidebar/candidates/checkButton";
 
 export default function CandidatesPage() {
   const { data, loading, error } = getCandidate();
@@ -44,6 +45,8 @@ export default function CandidatesPage() {
             selectedJob={selectedJob}
             setSelectedJob={setSelectedJob}
           />
+
+          { selectedJob && <CheckButton candidatesData={groupedCandidates[selectedJob]} />}
 
           {/* Display Candidates for Selected Job */}
           {selectedJob && (

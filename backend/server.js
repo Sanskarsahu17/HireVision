@@ -12,10 +12,22 @@ const HRDashboard = require('./routes/HRDashboard');
 
 const app = express();
 connectDB();
-app.use(cors(({
-    origin: 'http://localhost:5173', // Frontend URL
-    credentials: true,              // Allow credentials (cookies)
-  })));
+const allowedOrigins = [
+  "http://localhost:5173",  // Frontend
+  "http://localhost:5001",  // Another microservice
+  
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Allow cookies
+}));
 app.use(express.json());
 app.use(cookieParser()); // Use cookie-parser middleware
 require('dotenv').config();

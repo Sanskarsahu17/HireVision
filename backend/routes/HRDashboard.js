@@ -11,7 +11,7 @@ router.put('/updateJob/:jobId', updateJob);
 router.get('/Job-list',getJobs);
 router.delete('/deleteJob/:jobId',deleteJob)
 router.get('/candidateApplied',getCandidate);
-router.get('/checkEligibility',checkEligibility);
+router.post('/checkEligibility',checkEligibility);
 router.get('/getAppliedCandidate',getAppliedCandidates);
 
 module.exports = router;

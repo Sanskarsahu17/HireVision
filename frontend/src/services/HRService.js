@@ -46,3 +46,16 @@ export const getAppliedCandidate = async()=>{
     console.error("Error in fetching applied candidates: ",error);
   }
 }
+
+export const checkEligibility = async(data)=>{
+  try{
+    const response = await axios.post('http://localhost:5000/api/hr-dashboard/checkEligibility',data,{
+      withCredentials:true,
+      
+    });
+    return response.data;
+  }
+  catch(error){
+    console.log("Error checking eligibility: ",error);
+  }
+}
