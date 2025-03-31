@@ -1,6 +1,7 @@
 import React from "react";
+import {  TrendingUp, Clock, Users } from "lucide-react";
 import Sidebar from "../SideBar";
-import { BarChart2, TrendingUp, Clock, Users } from "lucide-react";
+
 
 const mockMetrics = [
   {

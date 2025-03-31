@@ -1,6 +1,7 @@
 import React from "react";
-import Sidebar from "../SideBar";
 import { Calendar, Clock, MapPin, Video } from "lucide-react";
+import Sidebar from "../SideBar";
+
 
 const mockInterviews = [
   {

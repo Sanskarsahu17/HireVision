@@ -1,6 +1,7 @@
 import React from "react";
-import Sidebar from "../SideBar";
 import { Mail, Search } from "lucide-react";
+import Sidebar from "../SideBar";
+
 
 const mockMessages = [
   {

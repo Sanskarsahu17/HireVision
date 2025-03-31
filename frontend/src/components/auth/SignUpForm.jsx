@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Mail, Lock, User, Briefcase } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import InputField from "./InputField";
 import axios from "axios";
+import InputField from "./InputField";
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({

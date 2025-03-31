@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import InputField from "./InputField";
 
 import axios from "axios";
 import Cookies from "js-cookie";
+import InputField from "./InputField";
 
 export default function LoginForm() {
   const navigate = useNavigate();

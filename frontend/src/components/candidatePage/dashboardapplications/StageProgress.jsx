@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, XCircle } from "lucide-react";
-import { applicationStages } from "../../../data/mockData";
+import { applicationStages } from "../../../data/mockdata";
 
 export default function StageProgress({ currentStage }) {
 

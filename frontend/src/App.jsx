@@ -1,6 +1,6 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { useState, useEffect, React } from "react";
+import { Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import Navbar from "./components/common/Navbar";
 import HomePage from "./pages/landingPage/HomePage";
@@ -16,7 +16,6 @@ import InterviewPage from "./pages/interview/InterviewPage";
 import CandidateApplications from "./pages/candidate/candidateapplication/CandidateApplications";
 import ApplicationForm from "./components/jobDescription/ApplicationForm";
 import Results from "./components/interview/Results";
-import { AuthProvider } from "./context/AuthContext";
 import ScheduledInterview from "./components/candidatePage/scheduledInterview/ScheduledInterview";
 import MessagesPage from "./components/candidatePage/messagespage/messagesPage";
 import Messages from "./components/hrPage/sidebar/Messages";

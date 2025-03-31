@@ -12,7 +12,7 @@ app = Flask(__name__)
 load_dotenv()
 
 # Set upload folder
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = '../backend/uploads'  # Adjust this path based on your folder structure
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 client = Groq(
@@ -97,7 +97,7 @@ def get_candidate_info():
 @app.route('/eligibility', methods=['POST'])
 def get_eligibility():
     data = request.json
-    resumes = data.get('resumes', [])  # Expecting a list of resume paths
+    resumes = data.get('resumes', [])
     job_position = data.get('jobPosition')
     job_requirement = data.get('requirements')
     if not resumes:
@@ -106,8 +106,9 @@ def get_eligibility():
     results = []
     # Save the file to the server
     for resume_path in resumes:
-        file_path = r"C:\Users\Sanskar Sahu\OneDrive\Desktop\NexusAi\HireVision\HireVision\backend\uploads\\" + resume_path["resume"]
-
+        # Update this path to point to your backend uploads folder
+        file_path = os.path.join(UPLOAD_FOLDER, resume_path["resume"])
+        
         extracted_text = extract_text_from_pdf(file_path)
 
         elibility_query = f"Document: {extracted_text}\n\nQuestion: Is the candidate eligible for {job_position} job position and job requirement as : {job_requirement}? \n\n Answer in '1' for yes and '0' for no only\n\nAnswer:"

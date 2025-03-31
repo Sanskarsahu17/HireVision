@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { Upload, Loader2 } from "lucide-react";
 import Cookies from "js-cookie";
 
-import axios from "axios";
 import { submitApplication } from "../../utils/api";
 
 export default function ApplicationForm({ job, onSuccess }) {
