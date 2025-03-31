@@ -1,38 +1,37 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig } from "eslint/config";
+import globals from "globals";
+import js from "@eslint/js";
+import pluginReact from "eslint-plugin-react";
+import importPlugin from "eslint-plugin-import";
+import unusedImports from "eslint-plugin-unused-imports";
 
-export default [
-  { ignores: ['dist'] },
+export default defineConfig([
+  { files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"] },
+  { files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"], languageOptions: { globals: globals.browser } },
+  { files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"], plugins: { js }, extends: ["js/recommended"] },
+  pluginReact.configs.flat.recommended,
   {
-    files: ['**/*.{js,jsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
+    settings: {
+      "import/resolver": {
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx"], // ✅ Allow JS & JSX imports
+        },
+        alias: {
+          map: [["@", "./src"]], // ✅ Support absolute imports like @/components
+          extensions: [".js", ".jsx", ".ts", ".tsx"],
+        },
       },
     },
-    settings: { react: { version: '18.3' } },
     plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      import: importPlugin,
+      "unused-imports": unusedImports,
     },
     rules: {
-      ...js.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      ...react.configs['jsx-runtime'].rules,
-      ...reactHooks.configs.recommended.rules,
-      'react/jsx-no-target-blank': 'off',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      "import/no-unresolved": "error", // 🔴 Error for missing imports
+      "import/no-extraneous-dependencies": "error", // 🔴 Error for unused dependencies
+      "import/no-duplicates": "warn", // 🟡 Warn if same import appears twice
+      "import/order": ["warn", { "groups": ["builtin", "external", "internal"] }],
+      "unused-imports/no-unused-imports": "warn", // 🟡 Warn for unused imports
     },
   },
-]
+]);

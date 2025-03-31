@@ -6,7 +6,7 @@ const InterviewPage = () => {
     <div className="mt-5">
       <Interview />
     </div>
-  ); // eslint-disable-line max-len, no-useless-concat
+  );  
 };
 
 export default InterviewPage;

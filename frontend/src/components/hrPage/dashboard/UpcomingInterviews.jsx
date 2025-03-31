@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, Video, Users } from "lucide-react";
+import { Calendar, Clock, Video } from "lucide-react";
 import { Avatar } from "../../ui/Avatar";
 
 export default function UpcomingInterviews() {

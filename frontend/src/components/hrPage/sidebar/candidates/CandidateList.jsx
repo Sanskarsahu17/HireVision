@@ -1,16 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  User,
-  Mail,
-  Phone,
-  Calendar,
-  FileText,
-  MapPin,
-  ChevronRight,
-  CheckCircle2,
-} from "lucide-react";
-import Sbutton from "../../../common/Sbutton";
+
+
 
 export default function CandidateList({ candidates }) {
   const statusMapping = {

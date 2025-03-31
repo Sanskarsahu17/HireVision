@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "axios";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 
 export async function fetchQuestion(id) {
   try {
@@ -124,15 +123,15 @@ export async function submitApplication(formData, job) {
     // console.error("Full error object:", error);
     // console.error("Response data:", error.response?.data);
     // console.error("Response status:", error.response?.status);
-    if(error.response.data.message){
+    if (error.response.data.message) {
       toast.error("Application Already Submitted");
     }
     const errorMessage =
       error.response?.data?.message || "Failed to submit application";
-    
+
     console.error("Application submission error:", error);
-    
+
     // console.log("Error: ", error.response.data);
-    setMessage(error.response.data.message);
+    // setMessage(error.response.data.message);
   }
 }

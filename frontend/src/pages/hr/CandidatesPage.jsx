@@ -3,9 +3,8 @@ import { motion } from "framer-motion";
 import Sidebar from "../../components/hrPage/SideBar";
 import { getCandidate } from "../../hooks/hrDashboard";
 import JobSelector from "../../components/hrPage/sidebar/candidates/JobSelector";
-import CandidateList from "../../components/hrPage/sidebar/candidates/candidateList";
-import CheckButton from "../../components/hrPage/sidebar/candidates/checkButton";
-
+import CandidateList from "../../components/hrPage/sidebar/candidates/CandidateList";
+import CheckButton from "./../../components/hrPage/sidebar/candidates/CheckButton";
 export default function CandidatesPage() {
   const { data, loading, error } = getCandidate();
   const [selectedJob, setSelectedJob] = useState(null);
@@ -46,7 +45,9 @@ export default function CandidatesPage() {
             setSelectedJob={setSelectedJob}
           />
 
-          { selectedJob && <CheckButton candidatesData={groupedCandidates[selectedJob]} />}
+          {selectedJob && (
+            <CheckButton candidatesData={groupedCandidates[selectedJob]} />
+          )}
 
           {/* Display Candidates for Selected Job */}
           {selectedJob && (

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageCircle, Send, Search, X } from "lucide-react";
+import { Send, Search, X } from "lucide-react";
+import Draggable from "react-draggable";
 import Sidebar from "../Sidebar";
 import { Avatar } from "../../ui/Avatar";
-import Draggable from "react-draggable";
 
 const messages = [
   {

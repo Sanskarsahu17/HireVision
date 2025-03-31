@@ -1,3 +1,4 @@
+import React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { motion } from "framer-motion";
 

@@ -1,7 +1,6 @@
 import React from "react";
 import { Toaster } from "sonner";
 import ProfileHeader from "../../components/profile/ProfileHeader";
-import ProfileSidebar from "../../components/profile/ProfileSidebar";
 import PersonalInfo from "../../components/profile/sections/PersonalInfo";
 import Experience from "../../components/profile/sections/Experience";
 import Skills from "../../components/profile/sections/Skills";
