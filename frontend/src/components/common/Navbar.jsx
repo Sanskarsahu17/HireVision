@@ -71,9 +71,10 @@ export default function Navbar() {
                   icon={LayoutDashboard}
                   label='Dashboard'
                 />
-                <NavItem to='/profile' icon={UserCircle} label='Profile' />
+                <NavItem to='candidate/profile' icon={UserCircle} label='Profile' />
                 <NavItem to='/jobs' icon={Briefcase} label='Jobs' />
                 <NavItem
+                  
                   isButton
                   onClick={handleLogout}
                   icon={LogOut}

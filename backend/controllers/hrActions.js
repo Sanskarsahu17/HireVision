@@ -263,7 +263,7 @@ const getJobs = async(req,res)=>{
     if (!token) {
       return res.status(401).json({ message: 'Authentication token is missing' });
     }
-    console.log(token);
+    console.log("jobs are fetched from the controller");
      // 2. Verify and decode the token
      const decoded = jwt.verify(token, process.env.JWT_SECRET);
      const email = decoded.email; // Assuming the token contains the `email` field

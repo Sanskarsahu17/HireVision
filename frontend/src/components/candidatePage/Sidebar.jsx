@@ -23,12 +23,12 @@ const navItems = [
     label: "Interviews",
     path: "/candidate/scheduledinterviews",
   },
-  {
-    icon: MessageSquare,
-    label: "Messages",
-    path: "/candidate/messages",
-    badge: 3,
-  },
+  // {
+  //   icon: MessageSquare,
+  //   label: "Messages",
+  //   path: "/candidate/messages",
+  //   badge: 3,
+  // },
 ];
 
 function Sidebar() {
