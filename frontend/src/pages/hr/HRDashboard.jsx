@@ -10,7 +10,7 @@ import { useHRData } from "../../hooks/hrDashboard";
 
 export default function HRDashboard() {
   const { applications, loading, error } = useHRData();
-  console.log(applications.userProfile);
+  // console.log(applications.userProfile);
   if (loading) {
     return <p>Loading applications...</p>;
   }
@@ -43,14 +43,14 @@ export default function HRDashboard() {
         </motion.div>
 
         <div className='space-y-8'>
-          <AnalyticsOverview />
+          {/* <AnalyticsOverview /> */}
 
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
             <UpcomingInterviews />
-            <TeamTasks />
+            {/* <TeamTasks /> */}
           </div>
 
-          <RecentActivity />
+          {/* <RecentActivity /> */}
         </div>
       </div>
     </div>

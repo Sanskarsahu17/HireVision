@@ -4,8 +4,11 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import InputField from "./InputField";
+import { useAuth } from "../../context/AuthContext";
+
 
 export default function SignUpForm() {
+  const {login} =useAuth()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -33,13 +36,19 @@ export default function SignUpForm() {
         return;
       }
 
-      await axios.post(
+      const response =await axios.post(
         "http://localhost:5000/api/authentication/register",
         formData
       );
-      console.log(formData);
+      const { token, user_role } = response.data;
+    login(token, user_role);
       // toast.success("Account created successfully!");
-      navigate("/auth");
+      if (user_role === "recruiter") {
+        navigate("/hr/dashboard");
+      } else {
+        navigate("/candidate/dashboard");
+      }
+      window.dispatchEvent(new Event("storage"));
     } catch (error) {
       console.error("Registration failed", error);
       toast.error("Failed to create account. Please try again.");

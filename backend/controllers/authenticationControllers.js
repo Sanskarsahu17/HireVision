@@ -64,7 +64,16 @@ const Register = async(req,res)=>{
     
     const newUser = new User(info);
     await newUser.save();
-    res.status(201).json({ message: 'User registered successfully' });
+
+    //sending a jwt to frontend
+    const jwt = require("jsonwebtoken");
+    const token = jwt.sign(
+        { id: newUser._id, email: newUser.email, role: newUser.user_role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" }
+    );
+
+    res.status(201).json({ message: 'User registered successfully' ,token,user_role:newUser.user_role});
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Error registering user', error });
