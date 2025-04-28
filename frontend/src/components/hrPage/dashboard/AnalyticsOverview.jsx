@@ -1,5 +1,6 @@
 import React from "react";
 import MetricCard from "./metrics/MetricCard";
+import { metrics } from "./metrics/MetricData";
 
 
 export default function AnalyticsOverview() {
