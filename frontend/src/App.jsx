@@ -26,6 +26,7 @@ import Reports from "./components/hrPage/sidebar/Reports";
 import Settings from "./components/hrPage/sidebar/Settings";
 import CandidatesPage from "./pages/hr/CandidatesPage";
 import Testing from "./components/hrPage/sidebar/candidates/Testing";
+import MCQ from "./pages/mcqsPage/MCQ";
 
 const App = () => {
   const userRole = "candidate"; // Replace with actual role logic
@@ -97,6 +98,10 @@ const App = () => {
           path='/hr/candidates'
           element={isAuthenticated ? <CandidatesPage /> : <AuthPage />}
         />
+        <Route
+          path='/candidate/mcqQuiz'
+          element={isAuthenticated ? <MCQ /> : <AuthPage/> }
+        />  
       </Routes>
       <Toaster richColors='true' />
     </div>
