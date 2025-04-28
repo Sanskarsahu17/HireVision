@@ -1,3 +1,5 @@
+import React from "react";
+
 const ResumeUpload = () => {
   const handleResumeUpload = (event) => {
     const file = event.target.files?.[0];

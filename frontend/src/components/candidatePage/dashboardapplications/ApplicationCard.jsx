@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Calendar, Building2 } from "lucide-react";
-import { applicationStages } from "../../../data/mockData";
+import { applicationStages } from "../../../data/mockdata";
 import { Avatar } from "../../../components/ui/Avatar";
 
 export default function ApplicationCard({ application }) {

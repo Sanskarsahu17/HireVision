@@ -30,12 +30,12 @@ const MOCK_QUESTIONS = [
   },
 ];
 
-const MOCK_TRANSCRIPTS = {
-  1: "In my previous role, I led a challenging project to migrate our legacy system to a modern cloud infrastructure. We faced significant technical debt and tight deadlines. I broke down the project into smaller milestones, implemented automated testing, and maintained clear communication with stakeholders. Through careful planning and team collaboration, we successfully completed the migration ahead of schedule.",
-  2: "I believe in addressing conflicts directly but professionally. In a recent situation, I had differing opinions with a colleague about the technical approach to a project. I scheduled a private meeting to discuss our perspectives, actively listened to their concerns, and worked together to find a solution that incorporated the best aspects of both approaches.",
-  3: "In five years, I aim to have grown into a technical lead role where I can mentor junior developers while still maintaining hands-on development work. I'm particularly interested in advancing my expertise in distributed systems and contributing to open-source projects in that domain.",
-  4: "When our team needed to implement a new GraphQL API, I had to quickly learn the technology stack. I dedicated extra hours to studying the documentation, built small proof-of-concept projects, and paired with experienced team members. Within two weeks, I was able to contribute meaningfully to the project and eventually helped other team members adopt the technology.",
-};
+// const MOCK_TRANSCRIPTS = {
+//   1: "In my previous role, I led a challenging project to migrate our legacy system to a modern cloud infrastructure. We faced significant technical debt and tight deadlines. I broke down the project into smaller milestones, implemented automated testing, and maintained clear communication with stakeholders. Through careful planning and team collaboration, we successfully completed the migration ahead of schedule.",
+//   2: "I believe in addressing conflicts directly but professionally. In a recent situation, I had differing opinions with a colleague about the technical approach to a project. I scheduled a private meeting to discuss our perspectives, actively listened to their concerns, and worked together to find a solution that incorporated the best aspects of both approaches.",
+//   3: "In five years, I aim to have grown into a technical lead role where I can mentor junior developers while still maintaining hands-on development work. I'm particularly interested in advancing my expertise in distributed systems and contributing to open-source projects in that domain.",
+//   4: "When our team needed to implement a new GraphQL API, I had to quickly learn the technology stack. I dedicated extra hours to studying the documentation, built small proof-of-concept projects, and paired with experienced team members. Within two weeks, I was able to contribute meaningfully to the project and eventually helped other team members adopt the technology.",
+// };
 
 // export const api = {
 //   getQuestions: async () => {

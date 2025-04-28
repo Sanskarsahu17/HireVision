@@ -1,6 +1,7 @@
 import React from "react";
-import Sidebar from "../SideBar";
 import { User, Bell, Shield, Mail } from "lucide-react";
+import Sidebar from "../SideBar";
+
 
 export default function Settings() {
   return (

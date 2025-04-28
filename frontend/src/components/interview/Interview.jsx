@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Play,
   Pause,
-  Timer,
   Bot,
   ChevronRight,
   Check,
@@ -11,7 +11,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { api } from "../../utils/InterviewApi";
-import { useNavigate } from "react-router-dom";
+
 // import { useAudioVisualization } from '../../hooks/useAudioVisualization';
 
 export default function Interview() {

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Bot, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
-import { api } from "../../utils/InterviewApi";
 import { useNavigate } from "react-router-dom";
+import {  Loader2, AlertCircle, ArrowLeft } from "lucide-react";
+import { api } from "../../utils/InterviewApi";
+
 
 export default function Results() {
   const [answers, setAnswers] = useState({});

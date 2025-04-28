@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 import Sidebar from "../../SideBar";
 import JobCard from "./JobCard";
 import JobModal from "./JobModal";
-import { toast } from "react-hot-toast";
+
 import { usePostedJobs } from "../../../../hooks/hrDashboard";
-import axios from "axios";
+
 
 export default function JobPostings() {
-  const { jobs, setJobs, loading, error } = usePostedJobs();
+  const { jobs, setJobs,  } = usePostedJobs();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
@@ -67,7 +69,9 @@ export default function JobPostings() {
         console.log("DElete job response: ", response);
         setJobs(jobs.filter((job) => job._id !== jobId));
         toast.success(response);
-      } catch (error) {}
+      } catch (error) {
+        console.log('error in job posting', error);
+      }
     }
   };
 
@@ -88,7 +92,7 @@ export default function JobPostings() {
 
           <div className='space-y-6'>
             {jobs.length === 0 ? (
-              <h1>Currently, you've not posted any jobs !</h1>
+              <h1>Currently, you&apos;ve not posted any jobs !</h1>
             ) : (
               jobs.map((job) => (
                 <JobCard
