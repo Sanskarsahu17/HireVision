@@ -8,7 +8,7 @@ const appliedJobs = new mongoose.Schema({
   requirements: {type: String, required: true}, // Job requirements
   company:{type:String,required: true}, //company
   jobPosition: {type: String,required:true}, // job position
-  applicationStatus: { 
+  applicaitonStatus: { 
     type: Number, 
     required: true, 
     enum: [0, 1, 2, 3, 4], // 0: under-review 1: shortlisted 2: Interview-scheduled 3:Selected 4: Rejected

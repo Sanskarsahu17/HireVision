@@ -44,16 +44,14 @@ export default function SignUpForm() {
     login(token, user_role);
       // toast.success("Account created successfully!");
       if (user_role === "recruiter") {
-        navigate("/recruiter/dashboard");
+        navigate("/hr/dashboard");
       } else {
         navigate("/candidate/dashboard");
       }
       window.dispatchEvent(new Event("storage"));
     } catch (error) {
       console.error("Registration failed", error);
-      const message =
-        error.response?.data?.message || "Failed to create account. Please try again.";
-      toast.error(message);
+      toast.error("Failed to create account. Please try again.");
     }
   };
 

@@ -6,7 +6,6 @@ import {useJobs1} from "../../hooks/useJobs1";
 export default function Listings() {
   // const { jobs, searchTerm, setSearchTerm, location, setLocation } = useJobs();
   const {jobs,loading,error} = useJobs1();
-
   return (
     <main className='max-w-6xl mx-auto px-4 py-12'>
       <div className='grid gap-6'>

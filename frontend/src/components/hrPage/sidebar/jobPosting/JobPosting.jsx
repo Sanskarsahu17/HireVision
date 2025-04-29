@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import Sidebar from "../../SideBar";
@@ -9,21 +9,11 @@ import { usePostedJobs } from "../../../../hooks/hrDashboard";
 
 
 export default function JobPostings() {
-  useEffect(() => {
-    // Fetch jobs only on mount or when dependencies change
-    // Example: fetchJobs() should be your function that gets jobs and calls setJobs
-    // If usePostedJobs already fetches jobs, you may not need this, but if not:
-    // fetchJobs();
-    // If jobs are fetched elsewhere, remove this block.
-  }, []);
   const { jobs, setJobs,  } = usePostedJobs();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
-  
-  // useEffect(() => {
-  //   console.log("Job Lists: ", jobs);
-  // }, [jobs]);
+  console.log("Job Lists: ", jobs.jobLists);
 
   const handleModal = (job = null) => {
     setEditingJob(job);
