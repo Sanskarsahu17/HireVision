@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Sidebar from "../../components/hrPage/SideBar";
-import { getCandidate } from "../../hooks/hrDashboard";
+import { getCandidate,usePostedJobs } from "../../hooks/hrDashboard";
 import JobSelector from "../../components/hrPage/sidebar/candidates/JobSelector";
 import CandidateList from "../../components/hrPage/sidebar/candidates/CandidateList";
 import CheckButton from "./../../components/hrPage/sidebar/candidates/CheckButton";
 export default function CandidatesPage() {
   const { data, loading, error } = getCandidate();
+  // const {jobs,loading1,error1} = usePostedJobs();
   const [selectedJob, setSelectedJob] = useState(null);
-
+  // console.log("Jobs psoted by the ",jobs);
   // Group candidates by job position
   const groupedCandidates = data
     ? data.reduce((acc, jobArray) => {
@@ -21,6 +22,8 @@ export default function CandidatesPage() {
         return acc;
       }, {})
     : {};
+
+    console.log("Job selector components: ",groupedCandidates)
 
   return (
     <div className='min-h-screen bg-slate-900 flex'>
