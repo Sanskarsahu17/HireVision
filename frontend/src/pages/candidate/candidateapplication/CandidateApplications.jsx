@@ -39,11 +39,11 @@ const CandidateApplications = () => {
 
   // If jobs applied
 
-<<<<<<< HEAD
+
   console.log("Applied Jobs: ",applications);
-=======
-  console.log(applications);
->>>>>>> parent of 31a1a28 (doing changes in  frontend)
+
+  
+
   return (
     <div className='bg-slate-900'>
       <Toaster position='top-right' />
