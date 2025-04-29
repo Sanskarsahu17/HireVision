@@ -21,6 +21,8 @@ import CandidatesPage from "./pages/hr/CandidatesPage";
 import Testing from "./components/hrPage/sidebar/candidates/Testing";
 import Unauthorized from "./components/common/Unauthorised";
 import MCQ from "./pages/mcqsPage/MCQ";
+import RoleBasedRoute from "./components/common/RoleBasedRoute";
+import { useAuth } from "./context/AuthContext";
 
 
 function isAuthenticated() {
@@ -31,7 +33,7 @@ function isAuthenticated() {
 
 const App = () => (
   <div className='bg-gray-900'>
-    <Navbar isAuthenticated={isAuthenticated} />
+    <Navbar  />
     <Routes>
 
         {/* public routes */}
@@ -53,15 +55,15 @@ const App = () => (
         /> 
       <Route path='/candidate/scheduledinterviews' element={<ScheduledInterview />} />
    
-
+6
      {/* hr protected routes */}
-      <Route path='/hr/dashboard' element={<HRDashboard />} />
-      <Route path='/hr/messages' element={<Messages />} />
-      <Route path='/hr/interviews' element={<Interviews />} />
-      <Route path='/hr/jobpostings' element={<JobPostings />} />
+      <Route path='/recruiter/dashboard' element={<HRDashboard />} />
+      <Route path='/recruiter/messages' element={<Messages />} />
+      <Route path='/recruiter/interviews' element={<Interviews />} />
+      <Route path='/recruiter/jobpostings' element={<JobPostings />} />
 
-      <Route path='/hr/candidates' element={<CandidatesPage />} />
-      <Route path='/hr/candidates/:_id' element={<Testing />} />
+      <Route path='/recruiter/candidates' element={<CandidatesPage />} />
+      <Route path='/recruiter/candidates/:_id' element={<Testing />} />
 
   
      {/* default route */}

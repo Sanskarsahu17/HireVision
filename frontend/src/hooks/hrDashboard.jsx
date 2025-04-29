@@ -29,7 +29,7 @@ export const useHRData = () => {
 export const usePostedJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -37,11 +37,12 @@ export const usePostedJobs = () => {
       try {
         const response = await getJob(); // HRservices me url change
         console.log("Response ", response);
-        setJobs(response.jobList); // Assuming the API returns jobs in `jobs` field
-        setError(null);
+        setJobs(response.jobList);
+       // Assuming the API returns jobs in `jobs` field
+        
       } catch (err) {
         console.error("Error fetching jobs:", err);
-        setError(err.message || "Failed to fetch jobs.");
+    
         toast.error("Failed to fetch job postings.");
       } finally {
         setLoading(false);
@@ -51,7 +52,7 @@ export const usePostedJobs = () => {
     fetchJobs();
   }, []);
 
-  return { jobs, setJobs, loading, error };
+  return { jobs, setJobs, loading, };
 };
 
 export const getCandidate = () => {

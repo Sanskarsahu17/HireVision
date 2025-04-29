@@ -233,7 +233,7 @@ const checkEligibility = async (req, res) => {
             await Promise.all(response_data.map(candidate =>
                 appliedJobs.findOneAndUpdate(
                     { _id: candidate.Candidate_ID },
-                    { $set: { applicaitonStatus: candidate.eligibility == 0 ? 4 : 0 } },
+                    { $set: { applicationStatus: candidate.eligibility == 0 ? 4 : 0 } },
                     { new: true }
                 )
             ));

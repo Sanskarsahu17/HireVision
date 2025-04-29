@@ -5,7 +5,7 @@ import { applicationStages } from "../../../data/mockdata";
 import { Avatar } from "../../../components/ui/Avatar";
 
 export default function ApplicationCard({ application }) {
-  const stage = applicationStages[application.applicaitonStatus];
+  const stage = applicationStages[application.applicationStatus];
   console.log(stage)
   const date = new Date(application.uploadedAt);
   const formattedDate = date.toLocaleDateString('en-US', {

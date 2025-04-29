@@ -32,8 +32,8 @@ export default function CandidateList({ candidates }) {
           <div className='text-slate-400 flex  items-center '>
             Status:
             <span className={`ml-2 px-2 py-1 rounded `}>
-              {/* {<p>{statusMapping[candidate.applicaitonStatus].label} </p>} */}
-              {<p>{statusMapping[candidate.applicaitonStatus].label}</p>}
+              {/* {<p>{statusMapping[candidate.applicationStatus].label} </p>} */}
+              {<p>{statusMapping[candidate.applicationStatus].label}</p>}
             </span>
           </div>{" "}
           <p className='text-slate-400'>
