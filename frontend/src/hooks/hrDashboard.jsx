@@ -36,7 +36,11 @@ export const usePostedJobs = () => {
       setLoading(true);
       try {
         const response = await getJob(); // HRservices me url change
+<<<<<<< HEAD
         console.log("usePostedJobs ", response);
+=======
+        console.log("Response ", response);
+>>>>>>> parent of 31a1a28 (doing changes in  frontend)
         setJobs(response.jobList); // Assuming the API returns jobs in `jobs` field
         setError(null);
       } catch (err) {
