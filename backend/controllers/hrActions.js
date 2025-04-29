@@ -233,7 +233,7 @@ const checkEligibility = async (req, res) => {
             await Promise.all(response_data.map(candidate =>
                 appliedJobs.findOneAndUpdate(
                     { _id: candidate.Candidate_ID },
-                    { $set: { applicaitonStatus: candidate.eligibility == 0 ? 4 : 0 } },
+                    { $set: { applicaitonStatus: candidate.eligibility == 0 ? 4 : 1 } },
                     { new: true }
                 )
             ));
@@ -260,6 +260,7 @@ const getJobs = async(req,res)=>{
     // 1. Extract token from cookies
     const token = req.cookies.token;
     
+    
     if (!token) {
       return res.status(401).json({ message: 'Authentication token is missing' });
     }
@@ -274,6 +275,7 @@ const getJobs = async(req,res)=>{
      // 3. Query MongoDB with the extracted email
      const jobList = await Job.find({email});
      
+     console.log(jobList);
 
      if (!jobList || jobList.length === 0) {
       return res.status(404).json({ message: 'No Jobs have been created' });

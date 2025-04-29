@@ -36,7 +36,7 @@ export const usePostedJobs = () => {
       setLoading(true);
       try {
         const response = await getJob(); // HRservices me url change
-        console.log("Response ", response);
+        console.log("usePostedJobs ", response);
         setJobs(response.jobList); // Assuming the API returns jobs in `jobs` field
         setError(null);
       } catch (err) {
