@@ -39,7 +39,7 @@ const CandidateApplications = () => {
 
   // If jobs applied
 
-  console.log("Applied Jobs: ",applications);
+  console.log("applications loaded");
   return (
     <div className='bg-slate-900'>
       <Toaster position='top-right' />
@@ -61,7 +61,7 @@ const CandidateApplications = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <StageProgress currentStage={application.applicaitonStatus} />
+                <StageProgress currentStage={application.applicationStatus} />
                 <ApplicationCard application={application} />
               </motion.div>
             ))}

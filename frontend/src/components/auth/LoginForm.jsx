@@ -38,7 +38,7 @@ export default function LoginForm() {
 
       toast.success("Login successful!");
       if (user_role === "recruiter") {
-        navigate("/hr/dashboard");
+        navigate("/recruiter/dashboard");
       } else {
         navigate("/candidate/dashboard");
       }

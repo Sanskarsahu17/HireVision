@@ -12,7 +12,8 @@ export const useJobs1 = () => {
       setError(null);
       try {
         const data = await fetchJobs();
-        setJobs(data);
+        console.log(data)
+        setJobs(Array.isArray(data.jobs) ? data.jobs : []);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch jobs');
       } finally {
