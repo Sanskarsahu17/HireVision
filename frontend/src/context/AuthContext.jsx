@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         const decoded = jwtDecode(token);
         setIsAuthenticated(true);
         setUserRole(decoded.role || "candidate");
-        // console.log(decoded);
+        console.log(decoded.role);
         return true;
       } catch (error) {
         console.error("Token validation failed:", error);

@@ -66,11 +66,19 @@ export default function Navbar() {
           <div className='hidden md:flex items-center gap-8'>
             {isAuthenticated ? (
               <>
-                <NavItem
-                  to={`/${userRole}/dashboard`}
-                  icon={LayoutDashboard}
-                  label='Dashboard'
-                />
+              {userRole === "recruiter" ? (
+  <NavItem
+    to={`/hr/dashboard`}
+    icon={LayoutDashboard}
+    label='Dashboard'
+  />
+) : (
+  <NavItem
+    to={`/candidate/dashboard`}
+    icon={LayoutDashboard}
+    label='Dashboard'
+  />
+)}
                 <NavItem to='candidate/profile' icon={UserCircle} label='Profile' />
                 <NavItem to='/jobs' icon={Briefcase} label='Jobs' />
                 <NavItem

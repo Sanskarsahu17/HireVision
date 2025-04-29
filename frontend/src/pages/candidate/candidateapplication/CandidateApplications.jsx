@@ -39,7 +39,11 @@ const CandidateApplications = () => {
 
   // If jobs applied
 
+
   console.log("Applied Jobs: ",applications);
+
+  
+
   return (
     <div className='bg-slate-900'>
       <Toaster position='top-right' />
