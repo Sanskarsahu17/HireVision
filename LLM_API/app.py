@@ -3,16 +3,27 @@ from dotenv import load_dotenv
 from groq import Groq
 import fitz  # PyMuPDF
 import json
+import boto3
+import tempfile
 import re
 from werkzeug.utils import secure_filename
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
-
 load_dotenv()
 
+# S3 client setup
+s3_client = boto3.client(
+    's3',
+    region_name=os.environ.get('AWS_REGION'),
+    aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY')
+)
+
+S3_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
+
 # Set upload folder
-UPLOAD_FOLDER = '../backend/uploads'  # Adjust this path based on your folder structure
+UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 client = Groq(
@@ -97,7 +108,7 @@ def get_candidate_info():
 @app.route('/eligibility', methods=['POST'])
 def get_eligibility():
     data = request.json
-    resumes = data.get('resumes', [])
+    resumes = data.get('resumes', [])  # Expecting a list of resume paths
     job_position = data.get('jobPosition')
     job_requirement = data.get('requirements')
     if not resumes:
@@ -105,18 +116,71 @@ def get_eligibility():
 
     results = []
     # Save the file to the server
-    for resume_path in resumes:
-        # Update this path to point to your backend uploads folder
-        file_path = os.path.join(UPLOAD_FOLDER, resume_path["resume"])
-        
-        extracted_text = extract_text_from_pdf(file_path)
+    for resume_info in resumes:
+        s3_key = resume_info["resume"]  # Ex: "resumes/user@email-171433.pdf"
 
-        elibility_query = f"Document: {extracted_text}\n\nQuestion: Is the candidate eligible for {job_position} job position and job requirement as : {job_requirement}? \n\n Answer in '1' for yes and '0' for no only\n\nAnswer:"
-        eligibility = query_groq_llm(elibility_query)
+        try:
+            # Download file from S3 to a temp file
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+                s3_client.download_fileobj(S3_BUCKET_NAME, s3_key, temp_file)
+                temp_file_path = temp_file.name  # Save temp file path
 
-        results.append({"resume": resume_path["resume"],"Candidate_ID":resume_path["candidate_ID"], "eligibility": eligibility.strip()[0]})
+            # Now extract text from the downloaded temp file
+            extracted_text = extract_text_from_pdf(temp_file_path)
+
+            # Build the LLM query
+            eligibility_query = (
+                f"Document: {extracted_text}\n\n"
+                f"Question: Is the candidate eligible for {job_position} job position and job requirement as: {job_requirement}?\n\n"
+                "Answer in '1' for yes and '0' for no only.\n\nAnswer:"
+            )
+            eligibility = query_groq_llm(eligibility_query)
+
+            results.append({
+                "resume": resume_info["resume"],
+                "Candidate_ID": resume_info["candidate_ID"],
+                "eligibility": eligibility.strip()[0]
+            })
+
+        except Exception as e:
+            results.append({
+                "resume": resume_info["resume"],
+                "Candidate_ID": resume_info["candidate_ID"],
+                "eligibility": "Error",
+                "error": str(e)
+            })
+
+        finally:
+            # Clean up temporary file
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
 
     return jsonify(results)
+
+@app.route('/getMcqs', methods=['GET'])
+def getMcqs():
+    data = request.json
+    resume_path = data.get('resumePath')
+    job_position = data.get('jobPosition')
+    job_requirement = data.get('requirements')
+    if not resume_path:
+        return jsonify({"error": "No resume path"}), 400
+
+    # Save the file to the server
+    file_path = r"C:\Users\Sanskar Sahu\OneDrive\Desktop\NexusAi\HireVision\HireVision\backend\uploads\\" + resume_path
+
+    # Step 1: Extract text from PDF
+    extracted_text = extract_text_from_pdf(file_path)
+
+    # Query to generate interview questions
+    questions1 = f"Document: {extracted_text}\n\n The above is the parsed resume of the candidate, we need to assess the candidate for the job Position of {job_position}, \n So generate 20 technical non personal";
+    question_response = query_groq_llm(questions1)
+
+    # Extract questions using regex
+    # questions = re.findall(r'(\d+\.\s|-\s)(.*?\?)', question_response)
+    # extracted_questions = [q[1].strip() for q in questions]
+    print("Extracted Questions:", question_response)  # Debugging
+    return jsonify({"questions": question_response})
 
 @app.route('/questions', methods=['POST'])
 def get_questions():

@@ -233,11 +233,7 @@ const checkEligibility = async (req, res) => {
             await Promise.all(response_data.map(candidate =>
                 appliedJobs.findOneAndUpdate(
                     { _id: candidate.Candidate_ID },
-<<<<<<< HEAD
-                    { $set: { applicationStatus: candidate.eligibility == 0 ? 4 : 0 } },
-=======
-                    { $set: { applicaitonStatus: candidate.eligibility == 0 ? 4 : 1 } },
->>>>>>> 13688c3140c841d573c23763b89aec3aa6d1a560
+                    { $set: { applicaitonStatus: candidate.eligibility == 0 ? 4 : 0 } },
                     { new: true }
                 )
             ));
@@ -279,7 +275,7 @@ const getJobs = async(req,res)=>{
      // 3. Query MongoDB with the extracted email
      const jobList = await Job.find({email});
      
-     console.log(jobList);
+    //  console.log(jobList);
 
      if (!jobList || jobList.length === 0) {
       return res.status(404).json({ message: 'No Jobs have been created' });

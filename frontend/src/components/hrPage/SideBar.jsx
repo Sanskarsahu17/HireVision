@@ -12,16 +12,16 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { icon: <LayoutDashboard />, label: "Dashboard", path: "/recruiter/dashboard" },
-  { icon: <Users />, label: "Candidates", path: "/recruiter/candidates" },
-  { icon: <Briefcase />, label: "Job Postings", path: "/recruiter/jobpostings" },
+  { icon: <LayoutDashboard />, label: "Dashboard", path: "/hr/dashboard" },
+  { icon: <Users />, label: "Candidates", path: "/hr/candidates" },
+  { icon: <Briefcase />, label: "Job Postings", path: "/hr/jobpostings" },
   // {
   //   icon: <MessageSquare />,
   //   label: "Messages",
   //   path: "/hr/messages",
   //   badge: 3,
   // },
-  { icon: <Calendar />, label: "Interviews", path: "/recruiter/interviews" },
+  { icon: <Calendar />, label: "Interviews", path: "/hr/interviews" },
   // { icon: <BarChart2 />, label: "Reports", path: "/hr/reports" },
   // { icon: <Settings />, label: "Settings", path: "/hr/settings" },
 ];

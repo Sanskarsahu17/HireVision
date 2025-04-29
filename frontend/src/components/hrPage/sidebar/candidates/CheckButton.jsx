@@ -13,7 +13,7 @@ export const CheckButton = (candidate) => {
         data.requirements = candidates[0].requirements;
         const resumes = [];
         candidates.forEach(element => {
-            if(element.applicationStatus === 0){
+            if(element.applicaitonStatus === 0){
             const candidate = {};
             candidate.resume = element.resumePath;
             candidate.candidate_ID = element._id;
