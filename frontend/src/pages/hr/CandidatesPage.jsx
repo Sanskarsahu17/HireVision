@@ -1,29 +1,25 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Sidebar from "../../components/hrPage/SideBar";
-import { getCandidate,usePostedJobs } from "../../hooks/hrDashboard";
+import { getCandidate } from "../../hooks/hrDashboard";
 import JobSelector from "../../components/hrPage/sidebar/candidates/JobSelector";
 import CandidateList from "../../components/hrPage/sidebar/candidates/CandidateList";
-import CheckButton from "./../../components/hrPage/sidebar/candidates/CheckButton";
-export default function CandidatesPage() {
-  const { data, loading, error } = getCandidate();
-  // const {jobs,loading1,error1} = usePostedJobs();
-  const [selectedJob, setSelectedJob] = useState(null);
-  // console.log("Jobs psoted by the ",jobs);
-  // Group candidates by job position
-  const groupedCandidates = data
-    ? data.reduce((acc, jobArray) => {
-        jobArray.forEach((candidate) => {
-          if (!acc[candidate.jobPosition]) {
-            acc[candidate.jobPosition] = [];
-          }
-          acc[candidate.jobPosition].push(candidate);
-        });
-        return acc;
-      }, {})
-    : {};
+import CheckButton from "../../components/hrPage/sidebar/candidates/CheckButton";
 
-    console.log("Job selector components: ",groupedCandidates)
+export default function CandidatesPage() {
+  const { data, error, isLoading, refetch } = getCandidate();
+  const [selectedJob, setSelectedJob] = useState(null);
+
+  // Group candidates by job position
+  const groupedCandidates = data?.reduce((acc, jobArray) => {
+    jobArray.forEach((candidate) => {
+      if (!acc[candidate.jobPosition]) {
+        acc[candidate.jobPosition] = [];
+      }
+      acc[candidate.jobPosition].push(candidate);
+    });
+    return acc;
+  }, {}) || {};
 
   return (
     <div className='min-h-screen bg-slate-900 flex'>
@@ -48,13 +44,15 @@ export default function CandidatesPage() {
             setSelectedJob={setSelectedJob}
           />
 
+          {/* Check Button and Candidate List for selected job */}
           {selectedJob && (
-            <CheckButton candidatesData={groupedCandidates[selectedJob]} />
-          )}
-
-          {/* Display Candidates for Selected Job */}
-          {selectedJob && (
-            <CandidateList candidates={groupedCandidates[selectedJob]} />
+            <>
+              <CheckButton
+                candidatesData={groupedCandidates[selectedJob]}
+                onCheckComplete={refetch}
+              />
+              <CandidateList candidates={groupedCandidates[selectedJob]} />
+            </>
           )}
         </div>
       </div>

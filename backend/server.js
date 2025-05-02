@@ -15,7 +15,7 @@ connectDB();
 const allowedOrigins = [
   "http://localhost:5173",  // Frontend
   "http://localhost:5001",  // Another microservice
-  
+  "https://5zxwv3km-5173.inc1.devtunnels.ms",
 ];
 
 app.use(cors({
