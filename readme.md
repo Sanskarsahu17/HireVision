@@ -151,8 +151,8 @@ The React app runs on [http://localhost:5183](http://localhost:5173).
 
 ## Contributors
 
-- Vivek Mishra ([vivekmishra9343](https://github.com/vivekmishra9343))
 - Sanskar Sahu ([Sanskarsahu17](https://github.com/Sanskarsahu17))
+- Vivek Mishra ([vivekmishra9343](https://github.com/vivekmishra9343))
 
 > Want to contribute? Open a pull request or issue!
 
