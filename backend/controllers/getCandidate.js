@@ -57,4 +57,26 @@ const getJobs = async (req, res) => {
   }
 };
 
-module.exports = { getCandidate,getJobs };
+const getInterviewList = async(req,res)=>{
+  try{
+    const token = req.cookies.token;
+    if(!token){
+      res.status(401).json({message: 'Authentication Token Missing'});
+    }
+    const decoded = jwt.verify(token,JWT_SECRET);
+    const email = decoded.email;
+    const interViewList = await appliedJobs.find({email: email, applicaitonStatus: 1}).lean();
+
+    if(!interViewList || interViewList.length === 0){
+      res.status(404).json({message: 'No interview Calls !'});
+    }
+
+    res.status(200).json({message: 'Interview List retrieved sucessfully', interViewList});
+  }
+  catch(error){
+    console.error('Error fetching Interview List:', error.message);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+}
+
+module.exports = { getCandidate,getJobs,getInterviewList };

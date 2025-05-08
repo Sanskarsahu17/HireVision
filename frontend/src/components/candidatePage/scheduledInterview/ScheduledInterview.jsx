@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { motion } from "framer-motion";
 import Sidebar from "../Sidebar";
 import InterviewCard from "./InterviewCard";
+import { getInterviews } from "../../../hooks/useDashBoardData";
 
-const interviews = [
+const interviews1 = [
   {
     id: 1,
     company: "TechCorp",
@@ -41,8 +42,31 @@ const interviews = [
 ];
 
 export default function ScheduledInterview() {
-  const [selectedInterview, setSelectedInterview] = useState(null);
 
+  
+  const {interviews, loading, error} = getInterviews();
+  const [selectedInterview, setSelectedInterview] = useState(null);
+  
+  const formattedInterviews = interviews?.map((interview,index) =>({
+    id: interview._id,
+    company: interview.company,
+    position: interview.jobPosition,
+    date: "2025-05-10", // placeholder or extract from interview if available
+    time: "14:00", // placeholder
+    duration: "1 hour", // placeholder
+    type: "AI Interview", // default or based on some field
+    status: "upcoming", // default or compute based on date
+    meetingLink: "https://meet.google.com/abc-defg-hij", // placeholder
+    interviewers: [], // or fetch from another endpoint
+    preparation: [
+      "Review the job requirements",
+      "Practice technical questions",
+      "Research the company",
+    ],
+  }))
+
+  const combinedInterview = [...formattedInterviews,...interviews1];
+  
   return (
     <div className='bg-slate-900 min-h-screen'>
       <Sidebar />
@@ -58,7 +82,7 @@ export default function ScheduledInterview() {
           </motion.div>
 
           <div className='grid gap-6'>
-            {interviews.map((interview, index) => (
+            {combinedInterview.map((interview, index) => (
               <InterviewCard
                 key={interview.id}
                 interview={interview}

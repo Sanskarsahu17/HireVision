@@ -11,3 +11,16 @@ export const dashboardService = async () => {
     throw error;
   }
 };
+
+export const getInterviewList = async()=>{
+  try{
+    const response = await axios.get('http://localhost:5000/api/dashboard/getInterviewList',{
+      withCredentials: true,
+    });
+    return response.data;
+  }
+  catch(error){
+    console.error("Error fetching the interview lists: ",error);
+    throw error;
+  }
+};
