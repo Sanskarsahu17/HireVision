@@ -8,6 +8,7 @@ const appliedjob = require('./routes/appliedJob');
 const assesmentRoutes = require('./routes/AssessmentRoutes');
 const  getCandidate = require('./routes/getDetails');
 const HRDashboard = require('./routes/HRDashboard');
+const virtualInterview = require('./routes/virtualInterview');
 
 
 const app = express();
@@ -41,6 +42,7 @@ app.use('/api/jobApplication',appliedjob);
 app.use('/api/assessment',assesmentRoutes);
 app.use('/api/dashboard',getCandidate);
 app.use('/api/hr-dashboard',HRDashboard);
+app.use('/api/virtualInterview',virtualInterview);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

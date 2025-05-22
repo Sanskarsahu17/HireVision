@@ -4,7 +4,8 @@ import { Calendar, Clock, Building2, Video, Users, CheckCircle2, AlertCircle, Bo
 import { motion } from "framer-motion";
 import { Avatar } from "../../ui/Avatar";
 
-export default function InterviewCard({ interview, onViewDetails, isSelected }) {
+
+export default function InterviewCard({ interview, onViewDetails, isSelected, onStart }) {
     const isAI = interview.type.toLowerCase().includes("ai");
 
     const containerStyle = isAI
@@ -15,7 +16,7 @@ export default function InterviewCard({ interview, onViewDetails, isSelected }) 
 
     const statusStyle = isAI ? "text-indigo-300" : "text-yellow-400";
     const statusIcon = isAI ? <Bot className='w-4 h-4' /> : <AlertCircle className='w-4 h-4' />;
-
+    console.log("Interview Card: ",interview);
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -78,7 +79,7 @@ export default function InterviewCard({ interview, onViewDetails, isSelected }) 
                 <div className='flex flex-col gap-3'>
                     {isAI ? (
                         <button
-                                
+                                onClick={() => onStart(interview)}
                                 className='inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-white to-slate-100 text-black font-semibold rounded-xl shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300 ease-in-out'
 
                             >

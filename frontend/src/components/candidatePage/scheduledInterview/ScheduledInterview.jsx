@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import Sidebar from "../Sidebar";
 import InterviewCard from "./InterviewCard";
 import { getInterviews } from "../../../hooks/useDashBoardData";
+import { useNavigate } from "react-router-dom";
+
 
 const interviews1 = [
+ 
   {
     id: 1,
     company: "TechCorp",
@@ -43,12 +46,12 @@ const interviews1 = [
 
 export default function ScheduledInterview() {
 
-  
+  const navigate = useNavigate();
   const {interviews, loading, error} = getInterviews();
   const [selectedInterview, setSelectedInterview] = useState(null);
-  
+
   const formattedInterviews = interviews?.map((interview,index) =>({
-    id: interview._id,
+    id: interview.jobId,
     company: interview.company,
     position: interview.jobPosition,
     date: "2025-05-10", // placeholder or extract from interview if available
@@ -66,6 +69,11 @@ export default function ScheduledInterview() {
   }))
 
   const combinedInterview = [...formattedInterviews,...interviews1];
+
+  const onStart = (interview)=>{
+    console.log("debug 3: ",interview);
+    navigate(`/candidate/virtualInterview?job_id=${interview.id}&job_position=${interview.position}&company_name=${interview.company}`);
+  }
   
   return (
     <div className='bg-slate-900 min-h-screen'>
@@ -89,6 +97,7 @@ export default function ScheduledInterview() {
                 index={index}
                 onSelect={setSelectedInterview}
                 isSelected={selectedInterview?.id === interview.id}
+                onStart = {onStart}
               />
             ))}
           </div>

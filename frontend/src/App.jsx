@@ -21,6 +21,7 @@ import CandidatesPage from "./pages/hr/CandidatesPage";
 import Testing from "./components/hrPage/sidebar/candidates/Testing";
 import Unauthorized from "./components/common/Unauthorised";
 import MCQ from "./pages/mcqsPage/MCQ";
+import VirtualInterviewPage from "./pages/virtualInterview/VirtualInterviewPage";
 
 
 function isAuthenticated() {
@@ -62,7 +63,7 @@ const App = () => (
 
       <Route path='/hr/candidates' element={<CandidatesPage />} />
       <Route path='/hr/candidates/:_id' element={<Testing />} />
-
+      <Route path='/candidate/virtualInterview' element={<VirtualInterviewPage/>} />
   
      {/* default route */}
      <Route path="/401" element={<Unauthorized />} />

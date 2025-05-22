@@ -36,7 +36,7 @@ export const getInterviews = () =>{
       try{
         const data = await getInterviewList();
         setInterviews(data.interViewList);
-
+        console.log("SelectedInterview ",data.interViewList);
       }
       catch(err){
         console.log(err);
