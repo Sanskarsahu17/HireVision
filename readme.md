@@ -52,7 +52,7 @@ HireVision/
 - npm 8+
 - MongoDB Atlas account (or local MongoDB)
 - AWS S3 account (for resume storage)
-- Groq LLM API key
+- Perplexity Sonar API key
 
 ---
 
@@ -60,7 +60,7 @@ HireVision/
 
 ### LLM_API/.env (Python backend)
 ```
-API_GROQ=your_groq_api_key
+PERPLEXITY_API=your_api_key
 AWS_ACCESS_KEY_ID=your_aws_access_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 AWS_REGION=us-east-1

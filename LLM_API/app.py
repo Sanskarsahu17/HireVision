@@ -25,7 +25,7 @@ API_ENDPOINT = 'https://api.perplexity.ai/chat/completions'
 API_KEY = os.getenv('PERPLEXITY_API_KEY')
 
 # Improved query_perplexity_llm with better error handling
-def query_perplexity_llm(prompt: str, model: str = "sonar-small-online") -> str:
+def query_perplexity_llm(prompt: str, model: str = "sonar-pro") -> str:
     headers = {
         'Authorization': f'Bearer {API_KEY}',
         'Content-Type': 'application/json'
