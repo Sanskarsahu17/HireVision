@@ -1,140 +1,93 @@
 import os
-from dotenv import load_dotenv
-from groq import Groq
-import fitz  # PyMuPDF
-import json
-import boto3
+import requests
 import tempfile
-import re
-from werkzeug.utils import secure_filename
+import fitz  # PyMuPDF
+from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+import boto3
 
-from flask import Flask, jsonify, request
-app = Flask(__name__)
 load_dotenv()
+app = Flask(__name__)
 
 # S3 client setup
 s3_client = boto3.client(
     's3',
-    region_name=os.environ.get('AWS_REGION'),
-    aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY')
+    region_name=os.getenv('AWS_REGION'),
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
 )
-
-S3_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
-
-# Set upload folder
+S3_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
 UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-client = Groq(
-    api_key=os.environ.get("API_GROQ"),
-)
+# Perplexity API setup
+API_ENDPOINT = 'https://api.perplexity.ai/chat/completions'
+API_KEY = os.getenv('PERPLEXITY_API_KEY')
+
+# Improved query_perplexity_llm with better error handling
+def query_perplexity_llm(prompt: str, model: str = "sonar-small-online") -> str:
+    headers = {
+        'Authorization': f'Bearer {API_KEY}',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.7
+    }
+
+    try:
+        response = requests.post(API_ENDPOINT, headers=headers, json=data, timeout=30)
+        response.raise_for_status()
+        result = response.json()
+        
+        if not result.get('choices') or not result['choices'][0].get('message'):
+            raise ValueError("Unexpected API response format")
+            
+        return result['choices'][0]['message']['content'].strip()
+        
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"API request failed: {str(e)}")
+    except (KeyError, IndexError, ValueError) as e:
+        raise Exception(f"Failed to parse API response: {str(e)}")
+
 
 def extract_text_from_pdf(pdf_path):
     text = ""
-    # Open the PDF file
     with fitz.open(pdf_path) as pdf:
-        # Iterate through each page
         for page in pdf:
-            text += page.get_text()  # Extract text from the page
+            text += page.get_text()
     return text
-
-def query_groq_llm(prompt):
-    # Use Groq LLM for chat completion
-    chat_completion = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}],
-        model="llama3-8b-8192",
-    )
-    return chat_completion.choices[0].message.content
-
-
-
-@app.route('/candidate_info', methods=['POST'])
-def get_candidate_info():
-    # # Get the PDF path from the request
-    # pdf_path = "./data/resumea.pdf"
-
-    # Logic to check whether file is uploaded or not
-    if 'pdf' not in request.files:
-        return jsonify({"error": "No file part"}), 400
-
-    file = request.files['pdf']
-
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-        # Save the file to the server
-    filename = secure_filename(file.filename)
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(file_path)
-
-    # Step 1: Extract text from PDF
-    extracted_text = extract_text_from_pdf(file_path)
-
-    # Define questions for Groq LLM
-    question1 = "What is the name of the candidate, answer name only"
-    name1 = f"Document: {extracted_text}\n\nQuestion: {question1}\n\nAnswer:"
-    contact_no1 = f"Document: {extracted_text}\n\nQuestion: If there is any contact number of the candidate, answer phone number only\n\nAnswer:"
-    email1 = f"Document: {extracted_text}\n\nQuestion: what is the email of the candidate, answer email only\n\nAnswer:"
-    skills1 = f"Document: {extracted_text}\n\nQuestion: What are the skills of the candidate?\n\nAnswer:"
-    projects1 = f"Document: {extracted_text}\n\nQuestion: What are the projects of the candidate?\n\nAnswer:"
-    recent_education1 = f"Document: {extracted_text}\n\nQuestion: What is the recent education of the candidate?\n\nAnswer:"
-    experience1 = f"Document: {extracted_text}\n\nQuestion: What is the experience of the candidate?\n\nAnswer:"
-
-
-    # Query Groq LLM
-    name = query_groq_llm(name1)
-    contact_no = query_groq_llm(contact_no1)
-    email = query_groq_llm(email1)
-    skills = query_groq_llm(skills1)
-    projects = query_groq_llm(projects1)
-    recent_education = query_groq_llm(recent_education1)
-    experience = query_groq_llm(experience1)
-
-
-    # Prepare the candidate data
-    candidate_data = {
-        "name": name.strip(),
-        "email": email.strip(),
-        "phone": contact_no.strip(),
-        "recent_education": recent_education.strip(),
-        "skills": skills.strip(),
-        "experience": experience.strip(),
-        "projects": projects.strip(),
-    }
-    return jsonify(candidate_data)
 
 
 @app.route('/eligibility', methods=['POST'])
 def get_eligibility():
     data = request.json
-    resumes = data.get('resumes', [])  # Expecting a list of resume paths
+    resumes = data.get('resumes', [])
     job_position = data.get('jobPosition')
     job_requirement = data.get('requirements')
+
     if not resumes:
         return jsonify({"error": "No resumes provided"}), 400
 
     results = []
-    # Save the file to the server
-    for resume_info in resumes:
-        s3_key = resume_info["resume"]  # Ex: "resumes/user@email-171433.pdf"
 
+    for resume_info in resumes:
+        s3_key = resume_info["resume"]
+        temp_file_path = None
         try:
-            # Download file from S3 to a temp file
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
                 s3_client.download_fileobj(S3_BUCKET_NAME, s3_key, temp_file)
-                temp_file_path = temp_file.name  # Save temp file path
+                temp_file_path = temp_file.name
 
-            # Now extract text from the downloaded temp file
             extracted_text = extract_text_from_pdf(temp_file_path)
 
-            # Build the LLM query
             eligibility_query = (
                 f"Document: {extracted_text}\n\n"
-                f"Question: Is the candidate eligible for {job_position} job position and job requirement as: {job_requirement}?\n\n"
-                "Answer in '1' for yes and '0' for no only.\n\nAnswer:"
+                f"Question: Is the candidate eligible for {job_position} job position and job requirement as: {job_requirement}?\n"
+                f"Answer in '1' for yes and '0' for no only.\n\nAnswer:"
             )
-            eligibility = query_groq_llm(eligibility_query)
+            eligibility = query_perplexity_llm(eligibility_query)
 
             results.append({
                 "resume": resume_info["resume"],
@@ -149,66 +102,94 @@ def get_eligibility():
                 "eligibility": "Error",
                 "error": str(e)
             })
-
         finally:
-            # Clean up temporary file
-            if os.path.exists(temp_file_path):
+            if temp_file_path and os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
 
     return jsonify(results)
 
-@app.route('/getMcqs', methods=['GET'])
-def getMcqs():
+
+@app.route('/interviews', methods=['POST'])
+def get_interviews():
     data = request.json
     resume_path = data.get('resumePath')
-    job_position = data.get('jobPosition')
-    job_requirement = data.get('requirements')
-    if not resume_path:
-        return jsonify({"error": "No resume path"}), 400
+    conversation_logs = data.get('conversationLogs', [])
+    job_position = data.get('jobPosition', '')
+    c_logs = "\n".join(f"{item['role']}: {item['text']}" for item in conversation_logs if 'role' in item and 'text' in item)
 
-    # Save the file to the server
-    file_path = r"C:\Users\Sanskar Sahu\OneDrive\Desktop\NexusAi\HireVision\HireVision\backend\uploads\\" + resume_path
+    s3_key = resume_path
+    temp_file_path = None
 
-    # Step 1: Extract text from PDF
-    extracted_text = extract_text_from_pdf(file_path)
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+            s3_client.download_fileobj(S3_BUCKET_NAME, s3_key, temp_file)
+            temp_file_path = temp_file.name
 
-    # Query to generate interview questions
-    questions1 = f"Document: {extracted_text}\n\n The above is the parsed resume of the candidate, we need to assess the candidate for the job Position of {job_position}, \n So generate 20 technical non personal";
-    question_response = query_groq_llm(questions1)
+        extracted_text = extract_text_from_pdf(temp_file_path)
 
-    # Extract questions using regex
-    # questions = re.findall(r'(\d+\.\s|-\s)(.*?\?)', question_response)
-    # extracted_questions = [q[1].strip() for q in questions]
-    print("Extracted Questions:", question_response)  # Debugging
-    return jsonify({"questions": question_response})
+        prompt = (
+            f"Resume Text: {extracted_text}\n\n"
+            f"Interview Logs: {c_logs}\n\n"
+            f"Question: Pretend you're a technical interviewer for the position of {job_position}. "
+            f"Based on the resume and conversation so far, ask ONE relevant follow-up question to the candidate.\n"
+            f"Just provide the question, nothing else.\n\nAnswer:"
+        )
+        response = query_perplexity_llm(prompt)
+        return jsonify({"question": response})
 
-@app.route('/questions', methods=['POST'])
-def get_questions():
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
+
+@app.route('/getInterviewScore', methods=['POST'])
+def getScore():
     data = request.json
     resume_path = data.get('resumePath')
-    job_position = data.get('jobPosition')
-    job_requirement = data.get('requirements')
-    if not resume_path:
-        return jsonify({"error": "No resume path"}), 400
+    conversation_logs = data.get('conversation_logs', [])
+    job_position = data.get('jobPosition', '')
 
-    # Save the file to the server
-    file_path = r"C:\Users\Sanskar Sahu\OneDrive\Desktop\NexusAi\HireVision\HireVision\backend\uploads\\" + resume_path
+    if not resume_path or not conversation_logs or not job_position:
+        return jsonify({"error": "Missing required fields"}), 400
 
-    # Step 1: Extract text from PDF
-    extracted_text = extract_text_from_pdf(file_path)
+    c_logs = "\n".join(f"{item['role']}: {item['text']}" for item in conversation_logs if 'role' in item and 'text' in item)
+    s3_key = resume_path
+    temp_file_path = None
 
-    # Query to generate interview questions
-    questions1 = f"Document: {extracted_text}\n\nQuestion: Generate 5 questions for taking interview of the candidate based on their skills and experience, difficulty level: easy\n\nAnswer:"
-    question_response = query_groq_llm(questions1)
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+            s3_client.download_fileobj(S3_BUCKET_NAME, s3_key, temp_file)
+            temp_file_path = temp_file.name
 
-    # Extract questions using regex
-    questions = re.findall(r'(\d+\.\s|-\s)(.*?\?)', question_response)
-    extracted_questions = [q[1].strip() for q in questions]
-    print("Extracted Questions:", extracted_questions)  # Debugging
-    return jsonify({"questions": extracted_questions})
+        extracted_text = extract_text_from_pdf(temp_file_path)
+
+        prompt_template = (
+            f"Suppose you're a non-biased interviewer for the job position: {job_position}.\n"
+            f"This is the candidate's resume:\n{extracted_text}\n\n"
+            f"Here is the interview conversation:\n{c_logs}\n\n"
+            f"Rate the candidate on a scale of 1-10 for accuracy. Only return the number.\n\n"
+        )
+
+        scores = [
+            query_perplexity_llm(prompt_template),
+            query_perplexity_llm(prompt_template),
+            query_perplexity_llm(prompt_template)
+        ]
+
+        return jsonify({"question": [s.strip() for s in scores]})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5001, debug=True)
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5001, debug=True)
