@@ -63,7 +63,7 @@ export const mockApplications = [
 
 export const mockUser = {
   id: "1",
-  name: "James Wilson",
+  name: "Sanskar Sahu",
   email: "james.wilson@example.com",
   role: "Software Engineer",
   avatar: null,

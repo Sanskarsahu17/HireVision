@@ -35,15 +35,15 @@ export default function CandidateDashboard() {
             </div>
           </motion.div>
 
-          {/* <motion.div
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
             <Analytics stats={dashboardStats} />
-          </motion.div> */}
+          </motion.div>
 
-          {/* <div className='grid md:grid-cols-2 gap-8'>
+          <div className='grid md:grid-cols-2 gap-8'>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -59,7 +59,7 @@ export default function CandidateDashboard() {
             >
               <TechArticles articles={techArticles} />
             </motion.div>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

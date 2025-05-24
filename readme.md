@@ -1,6 +1,6 @@
 # HireVision
 
-HireVision is a next-generation AI-driven interview platform that redefines modern hiring by offering fully automated, intelligent candidate assessments. It flawlessly merges real-time speech transcription, facial emotion detection, behavioral analytics, and automated video interviews to deliver a faster, smarter, and completely unbiased recruitment experience.
+HireVision is a next-generation AI-driven interview platform that redefines modern hiring by offering fully automated, intelligent candidate assessments. It is an AI-driven recruitment assistant that streamlines the hiring process by parsing resumes, extracting key information, and conducting preliminary virtual interviews with candidates. The system evaluates candidate responses, giving recruiters a data-backed shortlisting process — saving time, improving accuracy, and enabling smarter hiring decisions.
 
 ---
 

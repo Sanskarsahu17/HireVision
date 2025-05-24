@@ -14,8 +14,10 @@ const VirtualInterviewPage = () => {
   const job_id = searchParams.get("job_id");
   const job_position = searchParams.get("job_position");
   const company_name = searchParams.get("company_name");
+  const isSendingRef = useRef(false);
 
   const sendToBackend = async (updatedMessages) => {
+    console.log("Backend c_logs: ",messages);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/virtualInterview/getQuestions",
@@ -26,7 +28,7 @@ const VirtualInterviewPage = () => {
         { withCredentials: true }
       );
       const reply = response.data.response_data.question || "Thank you for your answer.";
-      setMessages((prev) => [...prev, { role: "Interviewer", text: reply }]);
+      setMessages(prev => [...prev, { role: "Interviewer", text: reply }]);
     } catch (error) {
       console.error("Error fetching question:", error);
     }
@@ -65,22 +67,42 @@ const VirtualInterviewPage = () => {
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
-      handleSend(transcript);
+      if (transcript) {
+    handleSend(transcript); // only call once here
+  }
     };
 
     recognitionRef.current = recognition;
+    return () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  };
   }, []);
 
   const startListening = () => {
     if (recognitionRef.current) recognitionRef.current.start();
   };
 
-  const handleSend = (text) => {
-  if (!text.trim()) return;
-  const updatedMessages = [...messages, { role: "Candidate", text }];
-  setMessages(updatedMessages);  // update state
-  sendToBackend(updatedMessages);  // send updated logs to backend
+const handleSend = async (text) => {
+  if (!text.trim() || isSendingRef.current) return;
+  isSendingRef.current = true;
+
+  try {
+    // Update UI immediately with user message
+    setMessages(prev => [...prev, { role: "Candidate", text }]);
+    
+    // Get updated messages including the new one
+    const updatedMessages = [...messages, { role: "Candidate", text }];
+    
+    await sendToBackend(updatedMessages);
+  } catch (err) {
+    console.error("Error in handleSend:", err);
+  } finally {
+    isSendingRef.current = false;
+  }
 };
+
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center bg-[#0f172a] text-white font-sans px-4">

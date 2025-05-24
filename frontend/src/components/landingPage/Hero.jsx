@@ -20,9 +20,12 @@ export function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className='text-5xl font-extrabold leading-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-600 drop-shadow-neon'>
-              Revolutionizing Hiring with <span className="animate-pulse">AI-Driven Precision</span>
-            </h1>
+            <h1 className='text-5xl font-extrabold leading-tight mb-6 drop-shadow-neon'>
+  Revolutionizing Hiring with{" "}
+  <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-600 animate-pulse">
+    AI-Driven Precision
+  </span>
+</h1>
             <p className='text-xl text-cyan-200 mb-8 drop-shadow-neon'>
               Transform your recruitment process with our three-stage AI-powered platform: Resume Analysis, Job Matching, and Virtual Interviews.
             </p>
